@@ -1,20 +1,24 @@
 {
-  "name": "url-shortener",
+  "name": "busway-api",
   "private": true,
   "version": "0.0.1",
-  "description": "Encore URL Shortener Tutorial",
+  "description": "API for Busway",
   "license": "MPL-2.0",
   "type": "module",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "gen:module": "tsx scripts_encore/create-module.ts",
+    "add:env": "tsx scripts_encore/add-env-to-config.ts"
   },
   "devDependencies": {
     "@types/node": "^20.5.7",
-    "typescript": "^5.2.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
     "vitest": "^2.1.4"
   },
   "dependencies": {
-    "encore.dev": "^1.46.13"
+    "encore.dev": "^1.46.13",
+    "inquirer": "^12.5.0"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.13.0"
