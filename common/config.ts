@@ -1,5 +1,8 @@
 /** @format */
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 function getEnv(key: string, required = true): string {
   const value = process.env[key];
   if (!value && required) {
@@ -11,6 +14,5 @@ function getEnv(key: string, required = true): string {
 }
 
 export const config = {
-  // Link to the metadata of the transport API
   transportMetadataUrl: getEnv('TRANSPORT_METADATA_URL'),
 };

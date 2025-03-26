@@ -1,7 +1,5 @@
 /** @format */
 
-import * as GeoJSON from 'geojson';
-
 export interface IGeoJsonResource {
   name: string;
   key: string;
@@ -13,39 +11,39 @@ export interface IGeoJsonResource {
 }
 
 export interface ITransportLine {
-  id: string;
   name: string;
   code: string;
   operator: string;
+  network: string;
   mode: string;
-  geometry: GeoJSON.MultiLineString;
+  opening_hours: string;
+  geometry: {
+    type: TMultiLineString;
+    coordinates: number[][][];
+  };
 }
 
 export interface IGeoJsonFeatureCollection {
-  type: EGeoJSONTypes.FeatureCollection;
+  type: TFeatureCollection;
   features: Array<{
-    type: EGeoJSONTypes.Feature;
+    type: TFeature;
     properties: Record<string, any>;
-    geometry: GeoJSON.Geometry;
+    geometry: {
+      type: string;
+      coordinates: any;
+    };
   }>;
 }
 
-export enum EMimetype {
-  GeoJson = 'application/geo+json',
-  Csv = 'text/csv',
-  Json = 'application/json',
-  Xml = 'application/xml',
-  Pdf = 'application/pdf',
+export interface IngestTransportResponse {
+  lines: ITransportLine[];
 }
 
-export enum EGeoJSONTypes {
-  Point = 'Point',
-  MultiPoint = 'MultiPoint',
-  LineString = 'LineString',
-  MultiLineString = 'MultiLineString',
-  Polygon = 'Polygon',
-  MultiPolygon = 'MultiPolygon',
-  GeometryCollection = 'GeometryCollection',
-  Feature = 'Feature',
-  FeatureCollection = 'FeatureCollection',
-}
+export type TMultiLineString = 'MultiLineString';
+export type TFeatureCollection = 'FeatureCollection';
+export type TFeature = 'Feature';
+
+export const MIMETYPE_GEOJSON = 'application/geo+json';
+export const GEOJSON_FEATURE_COLLECTION = 'FeatureCollection';
+export const GEOJSON_FEATURE = 'Feature';
+export const GEOJSON_MULTILINESTRING = 'MultiLineString';
