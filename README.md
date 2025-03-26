@@ -36,6 +36,12 @@ encore app create my-app-name --example=ts/url-shortener
 npm run gen:module
 ```
 
+## Add Variable env
+
+```bash
+npm run add:env
+```
+
 ## Run app locally
 
 Before running your application, make sure you have Docker installed and running. Then run this command from your application's root folder:
