@@ -15,4 +15,5 @@ function getEnv(key: string, required = true): string {
 
 export const config = {
   transportMetadataUrl: getEnv('TRANSPORT_METADATA_URL'),
+  databaseUrl: getEnv('DATABASE_URL'),
 };

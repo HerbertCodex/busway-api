@@ -3,12 +3,12 @@
 // database.ts
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { SQLDatabase } from 'encore.dev/storage/sqldb';
-import { users } from './schema';
+import { users } from './drizzle/schema';
 
 // Create SQLDatabase instance with migrations configuration
 const db = new SQLDatabase('busway-db', {
   migrations: {
-    path: 'drizzle/migrations',
+    path: './migrations',
     source: 'drizzle',
   },
 });
