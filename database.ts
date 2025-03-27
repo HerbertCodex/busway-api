@@ -2,7 +2,6 @@
 
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { SQLDatabase } from 'encore.dev/storage/sqldb';
-import { users } from './drizzle/schema';
 
 // Create SQLDatabase instance with migrations configuration
 const db = new SQLDatabase('busway-db', {
@@ -13,7 +12,4 @@ const db = new SQLDatabase('busway-db', {
 });
 
 // Initialize Drizzle ORM with the connection string
-const orm = drizzle(db.connectionString);
-
-// Query all users
-await orm.select().from(users);
+export const orm = drizzle(db.connectionString);
