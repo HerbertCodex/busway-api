@@ -8,6 +8,7 @@ export const ingestTransportPreview = api(
   {
     method: 'GET',
     path: '/transport-ingest',
+    expose: true,
   },
   async (): Promise<IngestTransportResponse> => {
     const lines = await ingestTransportData();
