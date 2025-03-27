@@ -1,6 +1,5 @@
 /** @format */
 
-// database.ts
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { SQLDatabase } from 'encore.dev/storage/sqldb';
 import { users } from './drizzle/schema';
