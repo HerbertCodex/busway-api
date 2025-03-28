@@ -99,7 +99,11 @@ export const transportLinesTable = p.pgTable(
       .uuid()
       .notNull()
       .references(() => citiesTable.id),
-    commune_id: p
+    start_commune_id: p
+      .uuid()
+      .notNull()
+      .references(() => communesTable.id),
+    end_commune_id: p
       .uuid()
       .notNull()
       .references(() => communesTable.id),

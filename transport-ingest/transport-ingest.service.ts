@@ -1,5 +1,6 @@
 /** @format */
 
+import log from 'encore.dev/log';
 import { fetchTransportGeoJson } from './transport-ingest.client';
 import {
   GEOJSON_FEATURE_COLLECTION,
@@ -19,9 +20,7 @@ export async function ingestTransportData(): Promise<ITransportLine[]> {
     .filter(feature => {
       const isValid = feature.geometry.type === GEOJSON_MULTILINESTRING;
       if (!isValid) {
-        console.warn(
-          `⛔️ Feature ignorée (geometry: ${feature.geometry.type})`,
-        );
+        log.warn(`⛔️ Feature ignorée (geometry: ${feature.geometry.type})`);
       }
       return isValid;
     })

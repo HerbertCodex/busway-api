@@ -26,7 +26,12 @@ export const communesRelations = relations(communesTable, ({ one, many }) => ({
     fields: [communesTable.city_id],
     references: [citiesTable.id],
   }),
-  transportLines: many(transportLinesTable),
+  startLines: many(transportLinesTable, {
+    relationName: 'start_commune',
+  }),
+  endLines: many(transportLinesTable, {
+    relationName: 'end_commune',
+  }),
 }));
 
 export const citiesRelations = relations(citiesTable, ({ one, many }) => ({
@@ -83,9 +88,15 @@ export const transportLinesRelations = relations(
       fields: [transportLinesTable.mode_id],
       references: [modes.id],
     }),
-    commune: one(communesTable, {
-      fields: [transportLinesTable.commune_id],
+    start_commune: one(communesTable, {
+      fields: [transportLinesTable.start_commune_id],
       references: [communesTable.id],
+      relationName: 'start_commune',
+    }),
+    end_commune: one(communesTable, {
+      fields: [transportLinesTable.end_commune_id],
+      references: [communesTable.id],
+      relationName: 'end_commune',
     }),
     metadata: one(dataMetadataTable, {
       fields: [transportLinesTable.metadata_id],

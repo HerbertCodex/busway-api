@@ -1,6 +1,7 @@
 /** @format */
 
 import { api } from 'encore.dev/api';
+import log from 'encore.dev/log';
 import { ingestTransportData } from './transport-ingest.service';
 import { IngestTransportResponse } from './transport-ingest.type';
 
@@ -22,7 +23,7 @@ export const ingestTransportAction = api(
     const lines = await ingestTransportData();
 
     if (dryRun) {
-      console.log(`🚧 dryRun activé – ${lines.length} lignes détectées`);
+      log.info(`🚧 dryRun activé – ${lines.length} lignes détectées`);
       return {
         message: `Dry run : ${lines.length} lignes prêtes à être importées`,
       };
@@ -31,7 +32,7 @@ export const ingestTransportAction = api(
     // TODO: insérer les lignes en base (quand modèle prêt)
     // await insertTransportLines(lines);
 
-    console.log(`✅ ${lines.length} lignes importées (simulation)`);
+    log.info(`✅ ${lines.length} lignes importées (simulation)`);
     return {
       message: `${lines.length} lignes importées avec succès`,
     };
