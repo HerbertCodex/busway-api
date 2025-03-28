@@ -1,5 +1,5 @@
 {
-  "id": "2d3e868b-cee9-41a3-9abb-868951249018",
+  "id": "6fa92e62-8f7c-428b-bcc5-eaeb3d512356",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -18,6 +18,12 @@
         "name": {
           "name": "name",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(3)",
           "primaryKey": false,
           "notNull": true
         },
@@ -66,6 +72,13 @@
           "columns": [
             "name"
           ]
+        },
+        "cities_code_unique": {
+          "name": "cities_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code"
+          ]
         }
       },
       "policies": {},
@@ -86,6 +99,12 @@
         "name": {
           "name": "name",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(3)",
           "primaryKey": false,
           "notNull": true
         },
@@ -133,6 +152,13 @@
           "nullsNotDistinct": false,
           "columns": [
             "name"
+          ]
+        },
+        "communes_code_unique": {
+          "name": "communes_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code"
           ]
         }
       },

@@ -13,6 +13,7 @@ export const countriesTable = p.pgTable('countries', {
 export const citiesTable = p.pgTable('cities', {
   id: p.uuid().primaryKey().defaultRandom(),
   name: p.text().unique().notNull(),
+  code: p.varchar({ length: 3 }).unique().notNull(),
   country_id: p
     .uuid()
     .notNull()
@@ -24,6 +25,7 @@ export const citiesTable = p.pgTable('cities', {
 export const communesTable = p.pgTable('communes', {
   id: p.uuid().primaryKey().defaultRandom(),
   name: p.text().unique().notNull(),
+  code: p.varchar({ length: 3 }).unique().notNull(),
   city_id: p
     .uuid()
     .notNull()

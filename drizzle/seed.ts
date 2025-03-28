@@ -18,7 +18,7 @@ export async function seed() {
     .insert(countriesTable)
     .values([
       {
-        name: "Côte d'Ivoire",
+        name: "côte d'Ivoire",
         code: 'CIV',
       },
     ])
@@ -30,7 +30,8 @@ export async function seed() {
     .insert(citiesTable)
     .values([
       {
-        name: 'Abidjan',
+        code: 'ABJ',
+        name: 'abidjan',
         country_id: civ.id,
       },
     ])
@@ -40,33 +41,69 @@ export async function seed() {
   // Insertion des communes de la ville d'Abidjan
   await drizzleDb.insert(communesTable).values([
     {
-      name: 'Abobo',
+      code: 'ABO',
+      name: 'abobo',
       city_id: abidjan.id,
     },
     {
-      name: 'Yopougon',
+      code: 'ADJ',
+      name: 'adjamé',
       city_id: abidjan.id,
     },
     {
-      name: 'Treichville',
+      code: 'ATC',
+      name: 'attécoubé',
       city_id: abidjan.id,
     },
     {
-      name: 'Cocody',
+      code: 'COC',
+      name: 'cocody',
+      city_id: abidjan.id,
+    },
+    {
+      code: 'KOU',
+      name: 'koumassi',
+      city_id: abidjan.id,
+    },
+    {
+      code: 'MAR',
+      name: 'marcory',
+      city_id: abidjan.id,
+    },
+    {
+      code: 'PLT',
+      name: 'plateau',
+      city_id: abidjan.id,
+    },
+    {
+      code: 'PBO',
+      name: 'port-bouet',
+      city_id: abidjan.id,
+    },
+    {
+      code: 'TRV',
+      name: 'treichville',
+      city_id: abidjan.id,
+    },
+    {
+      code: 'YOP',
+      name: 'yopougon',
       city_id: abidjan.id,
     },
   ]);
 
   // Insertion des compagnies de transport
-  const [sotra, privateCompagny] = await drizzleDb
+  const [sotra, stl, citrans, privateCompagny] = await drizzleDb
     .insert(transportCompaniesTable)
     .values([
       {
         name: 'SOTRA',
         country_id: civ.id,
       },
+      { name: 'STL', country_id: civ.id },
+      { name: 'CITRANS', country_id: civ.id },
       {
-        name: 'Privé',
+        name: 'Compagnie Privée',
         country_id: civ.id,
       },
     ])
@@ -74,12 +111,13 @@ export async function seed() {
     .returning();
 
   // Insertion des modes de transport
-  const [busMode, minibusMode, taxiMode] = await drizzleDb
+  const [busMode, miniCarMode, taxiMode, ferryMode] = await drizzleDb
     .insert(modes)
     .values([
       { name: 'bus', description: 'Bus classique de transport urbain' },
-      { name: 'minibus', description: 'Gbaka ou mini bus' },
+      { name: 'mini-car', description: 'Mini car de transport urbain' },
       { name: 'taxi', description: 'Taxi individuel ou collectif' },
+      { name: 'ferry', description: 'Bateau de transport urbain' },
     ])
     .onConflictDoNothing()
     .returning();
@@ -89,10 +127,14 @@ export async function seed() {
     .insert(transportTypesTable)
     .values([
       { name: 'monbus', company_id: sotra.id, mode_id: busMode.id },
+      { name: 'express', company_id: sotra.id, mode_id: busMode.id },
+      { name: 'monbato', company_id: sotra.id, mode_id: ferryMode.id },
+      { name: 'aqualines', company_id: citrans.id, mode_id: ferryMode.id },
+      { name: 'stl', company_id: stl.id, mode_id: ferryMode.id },
       {
         name: 'gbaka',
         company_id: privateCompagny.id,
-        mode_id: minibusMode.id,
+        mode_id: miniCarMode.id,
       },
       {
         name: 'wôrô-wôrô',
