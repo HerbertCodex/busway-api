@@ -1,19 +1,23 @@
 CREATE TABLE "cities" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
+	"code" varchar(3) NOT NULL,
 	"country_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "cities_name_unique" UNIQUE("name")
+	CONSTRAINT "cities_name_unique" UNIQUE("name"),
+	CONSTRAINT "cities_code_unique" UNIQUE("code")
 );
 --> statement-breakpoint
 CREATE TABLE "communes" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
+	"code" varchar(3) NOT NULL,
 	"city_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "communes_name_unique" UNIQUE("name")
+	CONSTRAINT "communes_name_unique" UNIQUE("name"),
+	CONSTRAINT "communes_code_unique" UNIQUE("code")
 );
 --> statement-breakpoint
 CREATE TABLE "countries" (

@@ -1,6 +1,5 @@
 /** @format */
 
-// lib/fetch.ts
 export async function fetchJson<T>(url: string): Promise<T> {
   const response = await fetch(url);
   if (!response.ok) {
