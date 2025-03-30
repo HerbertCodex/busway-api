@@ -8,7 +8,6 @@ import {
   dataMetadataTable,
   modes,
   transportCompaniesTable,
-  transportLinesTable,
   transportTypesTable,
 } from './schema';
 
@@ -68,7 +67,7 @@ export async function seed() {
       { code: 'KOU', name: 'koumassi', city_id: abidjan.id },
       { code: 'MAR', name: 'marcory', city_id: abidjan.id },
       { code: 'PLT', name: 'plateau', city_id: abidjan.id },
-      { code: 'PBO', name: 'port-bouet', city_id: abidjan.id },
+      { code: 'PBO', name: 'port-bouët', city_id: abidjan.id },
       { code: 'TRV', name: 'treichville', city_id: abidjan.id },
       { code: 'YOP', name: 'yopougon', city_id: abidjan.id },
     ])
@@ -104,6 +103,7 @@ export async function seed() {
     .insert(transportTypesTable)
     .values([
       { name: 'monbus', company_id: sotra.id, mode_id: busMode.id },
+      { name: 'navette', company_id: sotra.id, mode_id: busMode.id },
       { name: 'express', company_id: sotra.id, mode_id: busMode.id },
       { name: 'monbato', company_id: sotra.id, mode_id: ferryMode.id },
       { name: 'aqualines', company_id: citrans.id, mode_id: ferryMode.id },
@@ -121,38 +121,4 @@ export async function seed() {
     ])
     .onConflictDoNothing()
     .returning();
-
-  // Insertion de quelques lignes de transport exemple
-  await drizzleDb.insert(transportLinesTable).values([
-    {
-      name: 'Ligne Abobo → Cocody',
-      line: 'ABO-COC-01',
-      line_number: '01',
-      opening_hours: '05:00-22:00',
-      mode_id: busMode.id,
-      company_id: sotra.id,
-      type_id: monbus.id,
-      city_id: abidjan.id,
-      start_commune_id: abobo.id,
-      end_commune_id: cocody.id,
-      geometry_type: 'MultiLineString',
-      geometry_coordinates: [],
-      metadata_id: metadata.id,
-    },
-    {
-      name: 'Ligne Yopougon → Plateau',
-      line: 'YOP-PLT-02',
-      line_number: '02',
-      opening_hours: '05:00-21:00',
-      mode_id: busMode.id,
-      company_id: sotra.id,
-      type_id: monbus.id,
-      city_id: abidjan.id,
-      start_commune_id: yopougon.id,
-      end_commune_id: plateau.id,
-      geometry_type: 'MultiLineString',
-      geometry_coordinates: [],
-      metadata_id: metadata.id,
-    },
-  ]);
 }

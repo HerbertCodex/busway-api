@@ -127,3 +127,14 @@ export const transportLinesTable = p.pgTable(
     p.index('idx_transport_lines_synced_at').on(t.synced_at),
   ],
 );
+
+export const schema = {
+  citiesTable,
+  communesTable,
+  countriesTable,
+  dataMetadataTable,
+  modes,
+  transportCompaniesTable,
+  transportLinesTable,
+  transportTypesTable,
+};
