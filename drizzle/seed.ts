@@ -14,7 +14,7 @@ import {
 export async function seed() {
   console.log('🚀 Début du seed');
 
-  const [metadata] = await drizzleDb
+  await drizzleDb
     .insert(dataMetadataTable)
     .values({ id: 'default' })
     .onConflictDoNothing()
@@ -46,18 +46,7 @@ export async function seed() {
     .returning();
 
   // Insertion des communes de la ville d'Abidjan
-  const [
-    abobo,
-    adjame,
-    attecoube,
-    cocody,
-    koumassi,
-    marcory,
-    plateau,
-    portBouet,
-    treichville,
-    yopougon,
-  ] = await drizzleDb
+  await drizzleDb
     .insert(communesTable)
     .values([
       { code: 'ABO', name: 'abobo', city_id: abidjan.id },
@@ -99,7 +88,7 @@ export async function seed() {
     .returning();
 
   // Insertion des types de transport
-  const [monbus] = await drizzleDb
+  await drizzleDb
     .insert(transportTypesTable)
     .values([
       { name: 'monbus', company_id: sotra.id, mode_id: busMode.id },
