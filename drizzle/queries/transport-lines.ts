@@ -1,9 +1,12 @@
 /** @format */
 
-import { and, eq } from 'drizzle-orm';
+import { and, eq, ilike } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/pg-core';
 import { orm } from '../../database';
+import { TransportLineResult } from '../../transport-ingest/transport-ingest.type';
 import { communesTable, transportLinesTable } from '../schema';
+
+type GeometryCoordinates = [number, number][];
 
 export function getAllTransportLines() {
   return orm
@@ -22,18 +25,49 @@ export async function getTransportLineById(id: string) {
   return result;
 }
 
-export async function getTransportLinesBetween(from: string, to: string) {
+export async function getTransportLinesBetween(
+  from: string,
+  to: string,
+): Promise<TransportLineResult[]> {
   const start = alias(communesTable, 'start');
   const end = alias(communesTable, 'end');
 
-  return await orm
+  const result = await orm
     .select({
       line: transportLinesTable,
-      start,
-      end,
+      start: {
+        id: start.id,
+        name: start.name,
+        code: start.code,
+        city_id: start.city_id,
+        created_at: start.created_at,
+        updated_at: start.updated_at,
+      },
+      end: {
+        id: end.id,
+        name: end.name,
+        code: end.code,
+        city_id: end.city_id,
+        created_at: end.created_at,
+        updated_at: end.updated_at,
+      },
     })
     .from(transportLinesTable)
     .innerJoin(start, eq(transportLinesTable.start_commune_id, start.id))
     .innerJoin(end, eq(transportLinesTable.end_commune_id, end.id))
-    .where(and(eq(start.name, from), eq(end.name, to)));
+    .where(
+      and(
+        ilike(start.name, `%${from.trim()}%`),
+        ilike(end.name, `%${to.trim()}%`),
+      ),
+    );
+
+  return result.map(item => ({
+    ...item,
+    line: {
+      ...item.line,
+      geometry_coordinates: item.line
+        .geometry_coordinates as GeometryCoordinates,
+    },
+  }));
 }

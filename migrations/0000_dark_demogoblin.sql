@@ -64,7 +64,8 @@ CREATE TABLE "transport_lines" (
 	"company_id" uuid NOT NULL,
 	"type_id" uuid NOT NULL,
 	"city_id" uuid NOT NULL,
-	"commune_id" uuid NOT NULL,
+	"start_commune_id" uuid NOT NULL,
+	"end_commune_id" uuid NOT NULL,
 	"geometry_type" text NOT NULL,
 	"geometry_coordinates" json NOT NULL,
 	"data_version" integer DEFAULT 1 NOT NULL,
@@ -91,7 +92,8 @@ ALTER TABLE "transport_lines" ADD CONSTRAINT "transport_lines_mode_id_modes_id_f
 ALTER TABLE "transport_lines" ADD CONSTRAINT "transport_lines_company_id_transport_companies_id_fk" FOREIGN KEY ("company_id") REFERENCES "public"."transport_companies"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "transport_lines" ADD CONSTRAINT "transport_lines_type_id_transport_types_id_fk" FOREIGN KEY ("type_id") REFERENCES "public"."transport_types"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "transport_lines" ADD CONSTRAINT "transport_lines_city_id_cities_id_fk" FOREIGN KEY ("city_id") REFERENCES "public"."cities"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "transport_lines" ADD CONSTRAINT "transport_lines_commune_id_communes_id_fk" FOREIGN KEY ("commune_id") REFERENCES "public"."communes"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "transport_lines" ADD CONSTRAINT "transport_lines_start_commune_id_communes_id_fk" FOREIGN KEY ("start_commune_id") REFERENCES "public"."communes"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "transport_lines" ADD CONSTRAINT "transport_lines_end_commune_id_communes_id_fk" FOREIGN KEY ("end_commune_id") REFERENCES "public"."communes"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "transport_lines" ADD CONSTRAINT "transport_lines_metadata_id_data_metadata_id_fk" FOREIGN KEY ("metadata_id") REFERENCES "public"."data_metadata"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "transport_types" ADD CONSTRAINT "transport_types_company_id_transport_companies_id_fk" FOREIGN KEY ("company_id") REFERENCES "public"."transport_companies"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "transport_types" ADD CONSTRAINT "transport_types_mode_id_modes_id_fk" FOREIGN KEY ("mode_id") REFERENCES "public"."modes"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint

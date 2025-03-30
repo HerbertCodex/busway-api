@@ -1,9 +1,20 @@
 /** @format */
 
 import { api } from 'encore.dev/api';
-import log from 'encore.dev/log';
-import { ingestTransportData } from './transport-ingest.service';
-import { IngestTransportResponse } from './transport-ingest.type';
+import { getTransportLinesBetween } from '../drizzle/queries/transport-lines';
+import {
+  ingestAllFeatures,
+  ingestTransportData,
+} from './transport-ingest.service';
+import {
+  IngestTransportResponse,
+  TransportLineResponse,
+} from './transport-ingest.type';
+
+interface Params {
+  from: string;
+  to: string;
+}
 
 export const ingestTransportPreview = api(
   {
@@ -19,22 +30,19 @@ export const ingestTransportPreview = api(
 
 export const ingestTransportAction = api(
   { method: 'POST', path: '/transport-ingest' },
-  async ({ dryRun }: { dryRun?: boolean }): Promise<{ message: string }> => {
-    const lines = await ingestTransportData();
+  async () => {
+    await ingestAllFeatures('default');
+    return { status: 'ok' };
+  },
+);
 
-    if (dryRun) {
-      log.info(`🚧 dryRun activé – ${lines.length} lignes détectées`);
-      return {
-        message: `Dry run : ${lines.length} lignes prêtes à être importées`,
-      };
-    }
-
-    // TODO: insérer les lignes en base (quand modèle prêt)
-    // await insertTransportLines(lines);
-
-    log.info(`✅ ${lines.length} lignes importées (simulation)`);
-    return {
-      message: `${lines.length} lignes importées avec succès`,
-    };
+export const getLines = api(
+  {
+    method: 'GET',
+    path: '/get-lines',
+  },
+  async (params: Params): Promise<TransportLineResponse> => {
+    const lines = await getTransportLinesBetween(params.from, params.to);
+    return { results: lines };
   },
 );

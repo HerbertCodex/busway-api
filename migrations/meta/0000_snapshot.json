@@ -1,5 +1,5 @@
 {
-  "id": "6fa92e62-8f7c-428b-bcc5-eaeb3d512356",
+  "id": "1a4b1798-5467-4c68-a377-da604546ed4e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -441,8 +441,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "commune_id": {
-          "name": "commune_id",
+        "start_commune_id": {
+          "name": "start_commune_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "end_commune_id": {
+          "name": "end_commune_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -579,12 +585,25 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "transport_lines_commune_id_communes_id_fk": {
-          "name": "transport_lines_commune_id_communes_id_fk",
+        "transport_lines_start_commune_id_communes_id_fk": {
+          "name": "transport_lines_start_commune_id_communes_id_fk",
           "tableFrom": "transport_lines",
           "tableTo": "communes",
           "columnsFrom": [
-            "commune_id"
+            "start_commune_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "transport_lines_end_commune_id_communes_id_fk": {
+          "name": "transport_lines_end_commune_id_communes_id_fk",
+          "tableFrom": "transport_lines",
+          "tableTo": "communes",
+          "columnsFrom": [
+            "end_commune_id"
           ],
           "columnsTo": [
             "id"
