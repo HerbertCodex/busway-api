@@ -1,20 +1,11 @@
 /** @format */
 
 import { api } from 'encore.dev/api';
-import { getTransportLinesBetween } from '../drizzle/queries/transport-lines';
-import {
-  IIngestTransportResponse,
-  TransportLineResponse,
-} from './transport-lines.model';
+import { IIngestTransportResponse } from './transport-line.model';
 import {
   ingestAllFeatures,
   ingestTransportData,
-} from './transport-lines.service';
-
-interface Params {
-  from: string;
-  to: string;
-}
+} from './transport-line.service';
 
 export const ingestTransportPreview = api(
   {
@@ -36,13 +27,13 @@ export const ingestTransportAction = api(
   },
 );
 
-export const getLines = api(
-  {
-    method: 'GET',
-    path: '/get-lines',
-  },
-  async (params: Params): Promise<TransportLineResponse> => {
-    const lines = await getTransportLinesBetween(params.from, params.to);
-    return { results: lines };
-  },
-);
+// export const getLines = api(
+//   {
+//     method: 'GET',
+//     path: '/get-lines',
+//   },
+//   async (params: Params): Promise<TransportLineResponse> => {
+//     const lines = await getTransportLinesBetween(params.from, params.to);
+//     return { results: lines };
+//   },
+// );

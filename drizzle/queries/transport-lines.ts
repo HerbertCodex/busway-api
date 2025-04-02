@@ -6,7 +6,7 @@ import { orm } from '../../database';
 import {
   TransportGeometry,
   TransportLineResult,
-} from '../../transport-lines/transport-lines.model';
+} from '../../src/transport-line/transport-line.model';
 import { communesTable, transportLinesTable } from '../schema';
 
 export function getAllTransportLines() {

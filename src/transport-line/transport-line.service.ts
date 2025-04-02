@@ -2,28 +2,28 @@
 
 import { APIError, ErrCode } from 'encore.dev/api';
 import log from 'encore.dev/log';
+import { orm } from '../../database';
+import { modes, transportCompaniesTable } from '../../drizzle/schema';
+import { slugify } from '../../drizzle/seed';
 import { normalizeText } from '../common/normalizeText';
-import { orm } from '../database';
-import { modes, transportCompaniesTable } from '../drizzle/schema';
-import { slugify } from '../drizzle/seed';
-import { fetchTransportGeoJson } from './transport-lines.client';
+import { fetchTransportGeoJson } from './transport-line.client';
 import {
   findCommuneByContainedName,
   findCommuneByExactNormalizedName,
   getByNameInsensitive,
   getCityIdByName,
   getTransportTypeId,
-} from './transport-lines.helpers';
+} from './transport-line.helpers';
 import {
   GEOJSON_FEATURE_COLLECTION,
   GEOJSON_MULTILINESTRING,
   ITransportLineDownloadResponse,
   TTransportFeature,
-} from './transport-lines.model';
+} from './transport-line.model';
 import {
   ITransportLineRepository,
   PGTransportLineRepository,
-} from './transport-lines.repository';
+} from './transport-line.repository';
 
 const transportLineRepo: ITransportLineRepository =
   new PGTransportLineRepository();

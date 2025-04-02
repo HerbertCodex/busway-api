@@ -1,13 +1,13 @@
 /** @format */
 
 import { and, eq, ilike } from 'drizzle-orm';
-import { normalizeText } from '../common/normalizeText';
-import { orm } from '../database';
+import { orm } from '../../database';
 import {
   citiesTable,
   communesTable,
   transportTypesTable,
-} from '../drizzle/schema';
+} from '../../drizzle/schema';
+import { normalizeText } from '../common/normalizeText';
 
 /**
  * Recherche insensible à la casse dans une table contenant un champ "name"

@@ -2,4 +2,4 @@
 
 import { Service } from 'encore.dev/service';
 
-export default new Service('transport-ingest');
+export default new Service('commune');
