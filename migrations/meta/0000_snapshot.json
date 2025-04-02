@@ -1,5 +1,5 @@
 {
-  "id": "1a4b1798-5467-4c68-a377-da604546ed4e",
+  "id": "bc3fd3d4-48f3-4c9c-8222-a11fc0aa08f6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -17,6 +17,12 @@
         },
         "name": {
           "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -73,6 +79,13 @@
             "name"
           ]
         },
+        "cities_slug_unique": {
+          "name": "cities_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        },
         "cities_code_unique": {
           "name": "cities_code_unique",
           "nullsNotDistinct": false,
@@ -98,6 +111,12 @@
         },
         "name": {
           "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -154,6 +173,13 @@
             "name"
           ]
         },
+        "communes_slug_unique": {
+          "name": "communes_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        },
         "communes_code_unique": {
           "name": "communes_code_unique",
           "nullsNotDistinct": false,
@@ -183,8 +209,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "code": {
-          "name": "code",
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code_iso": {
+          "name": "code_iso",
           "type": "varchar(3)",
           "primaryKey": false,
           "notNull": true
@@ -215,11 +247,18 @@
             "name"
           ]
         },
-        "countries_code_unique": {
-          "name": "countries_code_unique",
+        "countries_slug_unique": {
+          "name": "countries_slug_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "code"
+            "slug"
+          ]
+        },
+        "countries_code_iso_unique": {
+          "name": "countries_code_iso_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code_iso"
           ]
         }
       },
@@ -277,6 +316,18 @@
           "primaryKey": false,
           "notNull": true
         },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(3)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "description": {
           "name": "description",
           "type": "text",
@@ -308,6 +359,20 @@
           "columns": [
             "name"
           ]
+        },
+        "modes_slug_unique": {
+          "name": "modes_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        },
+        "modes_code_unique": {
+          "name": "modes_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code"
+          ]
         }
       },
       "policies": {},
@@ -328,6 +393,18 @@
         "name": {
           "name": "name",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(3)",
           "primaryKey": false,
           "notNull": true
         },
@@ -376,6 +453,20 @@
           "columns": [
             "name"
           ]
+        },
+        "transport_companies_slug_unique": {
+          "name": "transport_companies_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        },
+        "transport_companies_code_unique": {
+          "name": "transport_companies_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code"
+          ]
         }
       },
       "policies": {},
@@ -393,11 +484,11 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "name": {
-          "name": "name",
+        "slug": {
+          "name": "slug",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "line": {
           "name": "line",
@@ -417,20 +508,14 @@
           "primaryKey": false,
           "notNull": false
         },
-        "mode_id": {
-          "name": "mode_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
         "company_id": {
           "name": "company_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "type_id": {
-          "name": "type_id",
+        "transport_type_id": {
+          "name": "transport_type_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -453,14 +538,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "geometry_type": {
-          "name": "geometry_type",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "geometry_coordinates": {
-          "name": "geometry_coordinates",
+        "geometry": {
+          "name": "geometry",
           "type": "json",
           "primaryKey": false,
           "notNull": true
@@ -530,22 +609,24 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "idx_transport_lines_slug": {
+          "name": "idx_transport_lines_slug",
+          "columns": [
+            {
+              "expression": "slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {
-        "transport_lines_mode_id_modes_id_fk": {
-          "name": "transport_lines_mode_id_modes_id_fk",
-          "tableFrom": "transport_lines",
-          "tableTo": "modes",
-          "columnsFrom": [
-            "mode_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
         "transport_lines_company_id_transport_companies_id_fk": {
           "name": "transport_lines_company_id_transport_companies_id_fk",
           "tableFrom": "transport_lines",
@@ -559,12 +640,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "transport_lines_type_id_transport_types_id_fk": {
-          "name": "transport_lines_type_id_transport_types_id_fk",
+        "transport_lines_transport_type_id_transport_types_id_fk": {
+          "name": "transport_lines_transport_type_id_transport_types_id_fk",
           "tableFrom": "transport_lines",
           "tableTo": "transport_types",
           "columnsFrom": [
-            "type_id"
+            "transport_type_id"
           ],
           "columnsTo": [
             "id"
@@ -626,7 +707,15 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "transport_lines_slug_unique": {
+          "name": "transport_lines_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -645,6 +734,18 @@
         "name": {
           "name": "name",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(3)",
           "primaryKey": false,
           "notNull": true
         },
@@ -711,6 +812,20 @@
           "nullsNotDistinct": false,
           "columns": [
             "name"
+          ]
+        },
+        "transport_types_slug_unique": {
+          "name": "transport_types_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        },
+        "transport_types_code_unique": {
+          "name": "transport_types_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code"
           ]
         }
       },

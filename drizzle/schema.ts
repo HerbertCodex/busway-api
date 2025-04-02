@@ -5,7 +5,8 @@ import * as p from 'drizzle-orm/pg-core';
 export const countriesTable = p.pgTable('countries', {
   id: p.uuid().primaryKey().defaultRandom(),
   name: p.text().unique().notNull(),
-  code: p.varchar({ length: 3 }).unique().notNull(),
+  slug: p.text().unique().notNull(),
+  code_iso: p.varchar({ length: 3 }).unique().notNull(),
   created_at: p.timestamp().notNull().defaultNow(),
   updated_at: p.timestamp().notNull().defaultNow(),
 });
@@ -13,6 +14,7 @@ export const countriesTable = p.pgTable('countries', {
 export const citiesTable = p.pgTable('cities', {
   id: p.uuid().primaryKey().defaultRandom(),
   name: p.text().unique().notNull(),
+  slug: p.text().unique().notNull(),
   code: p.varchar({ length: 3 }).unique().notNull(),
   country_id: p
     .uuid()
@@ -25,6 +27,7 @@ export const citiesTable = p.pgTable('cities', {
 export const communesTable = p.pgTable('communes', {
   id: p.uuid().primaryKey().defaultRandom(),
   name: p.text().unique().notNull(),
+  slug: p.text().unique().notNull(),
   code: p.varchar({ length: 3 }).unique().notNull(),
   city_id: p
     .uuid()
@@ -37,6 +40,8 @@ export const communesTable = p.pgTable('communes', {
 export const transportCompaniesTable = p.pgTable('transport_companies', {
   id: p.uuid().primaryKey().defaultRandom(),
   name: p.text().unique().notNull(),
+  slug: p.text().unique().notNull(),
+  code: p.varchar({ length: 3 }).unique().notNull(),
   country_id: p
     .uuid()
     .notNull()
@@ -48,6 +53,8 @@ export const transportCompaniesTable = p.pgTable('transport_companies', {
 export const transportTypesTable = p.pgTable('transport_types', {
   id: p.uuid().primaryKey().defaultRandom(),
   name: p.text().unique().notNull(),
+  slug: p.text().unique().notNull(),
+  code: p.varchar({ length: 3 }).unique().notNull(),
   company_id: p
     .uuid()
     .notNull()
@@ -64,6 +71,8 @@ export const transportTypesTable = p.pgTable('transport_types', {
 export const modes = p.pgTable('modes', {
   id: p.uuid().primaryKey().defaultRandom(),
   name: p.text().unique().notNull(),
+  slug: p.text().unique().notNull(),
+  code: p.varchar({ length: 3 }).unique().notNull(),
   description: p.text(),
   created_at: p.timestamp().notNull().defaultNow(),
   updated_at: p.timestamp().notNull().defaultNow(),
@@ -79,19 +88,15 @@ export const transportLinesTable = p.pgTable(
   'transport_lines',
   {
     id: p.uuid().primaryKey().defaultRandom(),
-    name: p.text(),
+    slug: p.text().unique().notNull(),
     line: p.text().notNull(),
     line_number: p.text(),
     opening_hours: p.text(),
-    mode_id: p
-      .uuid()
-      .notNull()
-      .references(() => modes.id),
     company_id: p
       .uuid()
       .notNull()
       .references(() => transportCompaniesTable.id),
-    type_id: p
+    transport_type_id: p
       .uuid()
       .notNull()
       .references(() => transportTypesTable.id),
@@ -107,24 +112,20 @@ export const transportLinesTable = p.pgTable(
       .uuid()
       .notNull()
       .references(() => communesTable.id),
-
-    geometry_type: p.text().notNull(),
-    geometry_coordinates: p.json().notNull(),
-
+    geometry: p.json().notNull(),
     data_version: p.integer().notNull().default(1),
     synced_at: p.timestamp().notNull().defaultNow(),
-
     metadata_id: p
       .text()
       .notNull()
       .references(() => dataMetadataTable.id),
-
     created_at: p.timestamp().notNull().defaultNow(),
     updated_at: p.timestamp().notNull().defaultNow(),
   },
   t => [
     p.index('idx_transport_lines_data_version').on(t.data_version),
     p.index('idx_transport_lines_synced_at').on(t.synced_at),
+    p.index('idx_transport_lines_slug').on(t.slug),
   ],
 );
 
