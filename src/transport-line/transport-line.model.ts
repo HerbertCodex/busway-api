@@ -26,6 +26,11 @@ export const GEOJSON_FEATURE_COLLECTION = 'FeatureCollection';
 export const GEOJSON_FEATURE = 'Feature';
 export const GEOJSON_MULTILINESTRING = 'MultiLineString';
 
+export interface Params {
+  from: string;
+  to: string;
+}
+
 export interface IGeoJsonResource {
   name: string;
   key: string;

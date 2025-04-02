@@ -1,7 +1,7 @@
 /** @format */
 import 'dotenv/config';
 import { defineConfig } from 'drizzle-kit';
-import { config } from './common/config';
+import { config } from './src/common/config';
 
 export default defineConfig({
   out: 'migrations',
