@@ -11,6 +11,14 @@ import {
   transportTypesTable,
 } from './schema';
 
+export const slugify = (str: string) =>
+  str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
 export async function seed() {
   console.log('🚀 Début du seed');
 
@@ -25,8 +33,9 @@ export async function seed() {
     .insert(countriesTable)
     .values([
       {
-        name: "côte d'Ivoire",
-        code: 'CIV',
+        name: "Côte d'Ivoire",
+        code_iso: 'CIV',
+        slug: slugify("côte d'Ivoire"),
       },
     ])
     .onConflictDoNothing()
@@ -38,7 +47,8 @@ export async function seed() {
     .values([
       {
         code: 'ABJ',
-        name: 'abidjan',
+        name: 'Abidjan',
+        slug: slugify('abidjan'),
         country_id: civ.id,
       },
     ])
@@ -49,28 +59,98 @@ export async function seed() {
   await drizzleDb
     .insert(communesTable)
     .values([
-      { code: 'ABO', name: 'abobo', city_id: abidjan.id },
-      { code: 'ADJ', name: 'adjamé', city_id: abidjan.id },
-      { code: 'ATC', name: 'attécoubé', city_id: abidjan.id },
-      { code: 'COC', name: 'cocody', city_id: abidjan.id },
-      { code: 'KOU', name: 'koumassi', city_id: abidjan.id },
-      { code: 'MAR', name: 'marcory', city_id: abidjan.id },
-      { code: 'PLT', name: 'plateau', city_id: abidjan.id },
-      { code: 'PBO', name: 'port-bouët', city_id: abidjan.id },
-      { code: 'TRV', name: 'treichville', city_id: abidjan.id },
-      { code: 'YOP', name: 'yopougon', city_id: abidjan.id },
+      {
+        name: 'Abobo',
+        slug: slugify('abobo'),
+        code: 'ABB', // Updated code for 'Abobo' from 'ABO' to 'ABB'
+        city_id: abidjan.id,
+      },
+      {
+        name: 'Adjamé',
+        slug: slugify('adjamé'),
+        code: 'ADJ',
+        city_id: abidjan.id,
+      },
+      {
+        name: 'Attécoubé',
+        slug: slugify('attécoubé'),
+        code: 'ATC',
+        city_id: abidjan.id,
+      },
+      {
+        name: 'Cocody',
+        slug: slugify('cocody'),
+        code: 'CCD',
+        city_id: abidjan.id,
+      },
+      {
+        name: 'Koumassi',
+        slug: slugify('koumassi'),
+        code: 'KMS',
+        city_id: abidjan.id,
+      },
+      {
+        name: 'Marcory',
+        slug: slugify('marcory'),
+        code: 'MRC',
+        city_id: abidjan.id,
+      },
+      {
+        name: 'Plateau',
+        slug: slugify('plateau'),
+        code: 'PLT',
+        city_id: abidjan.id,
+      },
+      {
+        name: 'Port-Bouët',
+        slug: slugify('port-bouët'),
+        code: 'PBT',
+        city_id: abidjan.id,
+      },
+      {
+        name: 'Treichville',
+        slug: slugify('treichville'),
+        code: 'TRC',
+        city_id: abidjan.id,
+      },
+      {
+        name: 'Yopougon',
+        slug: slugify('yopougon'),
+        code: 'YOP',
+        city_id: abidjan.id,
+      },
     ])
     .onConflictDoNothing()
     .returning();
 
   // Insertion des compagnies de transport
-  const [sotra, stl, citrans, privateCompagny] = await drizzleDb
+  const [sotra, stl, citrans, privateCompany] = await drizzleDb
     .insert(transportCompaniesTable)
     .values([
-      { name: 'SOTRA', country_id: civ.id },
-      { name: 'STL', country_id: civ.id },
-      { name: 'CITRANS', country_id: civ.id },
-      { name: 'Compagnie Privée', country_id: civ.id },
+      {
+        name: 'SOTRA',
+        slug: slugify('SOTRA'),
+        code: 'SOT',
+        country_id: civ.id,
+      },
+      {
+        name: 'STL',
+        slug: slugify('STL'),
+        code: 'STL',
+        country_id: civ.id,
+      },
+      {
+        name: 'CITRANS',
+        slug: slugify('CITRANS'),
+        code: 'CTR',
+        country_id: civ.id,
+      },
+      {
+        name: 'Compagnie Privée',
+        slug: slugify('Compagnie Privée'),
+        code: 'CPV',
+        country_id: civ.id,
+      },
     ])
     .onConflictDoNothing()
     .returning();
@@ -79,10 +159,34 @@ export async function seed() {
   const [busMode, miniCarMode, taxiMode, ferryMode] = await drizzleDb
     .insert(modes)
     .values([
-      { name: 'bus', description: 'Bus classique de transport urbain' },
-      { name: 'mini-car', description: 'Mini car de transport urbain' },
-      { name: 'taxi', description: 'Taxi individuel ou collectif' },
-      { name: 'ferry', description: 'Bateau de transport urbain' },
+      {
+        name: 'Bus',
+        slug: slugify('Bus'),
+        code: 'BUS',
+        description:
+          'Bus de grande capacité assurant le transport urbain collectif (ex. : SOTRA)',
+      },
+      {
+        name: 'Mini-car',
+        slug: slugify('Mini-car'),
+        code: 'MNC',
+        description:
+          'Mini-car de transport en commun, souvent utilisé pour les liaisons intercommunales (ex. : Gbaka)',
+      },
+      {
+        name: 'Taxi',
+        slug: slugify('Taxi'),
+        code: 'TAX',
+        description:
+          'Taxi individuel ou collectif (ex. : Wôrô-wôrô, taxi-compteurs)',
+      },
+      {
+        name: 'Ferry',
+        slug: slugify('Ferry'),
+        code: 'FRY',
+        description:
+          'Transport fluvial par bateau, traversée de la lagune (ex. : bateaux-bus SOTRA)',
+      },
     ])
     .onConflictDoNothing()
     .returning();
@@ -91,20 +195,60 @@ export async function seed() {
   await drizzleDb
     .insert(transportTypesTable)
     .values([
-      { name: 'monbus', company_id: sotra.id, mode_id: busMode.id },
-      { name: 'navette', company_id: sotra.id, mode_id: busMode.id },
-      { name: 'express', company_id: sotra.id, mode_id: busMode.id },
-      { name: 'monbato', company_id: sotra.id, mode_id: ferryMode.id },
-      { name: 'aqualines', company_id: citrans.id, mode_id: ferryMode.id },
-      { name: 'stl', company_id: stl.id, mode_id: ferryMode.id },
       {
-        name: 'gbaka',
-        company_id: privateCompagny.id,
+        name: 'MonBus',
+        slug: slugify('MonBus'),
+        code: 'MBS',
+        company_id: sotra.id,
+        mode_id: busMode.id,
+      },
+      {
+        name: 'Navette',
+        slug: slugify('Navette'),
+        code: 'NVT',
+        company_id: sotra.id,
+        mode_id: busMode.id,
+      },
+      {
+        name: 'Express',
+        slug: slugify('Express'),
+        code: 'EXP',
+        company_id: sotra.id,
+        mode_id: busMode.id,
+      },
+      {
+        name: 'MonBato',
+        slug: slugify('MonBato'),
+        code: 'MBT',
+        company_id: sotra.id,
+        mode_id: ferryMode.id,
+      },
+      {
+        name: 'Aqualines',
+        slug: slugify('Aqualines'),
+        code: 'AQL',
+        company_id: citrans.id,
+        mode_id: ferryMode.id,
+      },
+      {
+        name: 'STL',
+        slug: slugify('STL'),
+        code: 'STL',
+        company_id: stl.id,
+        mode_id: ferryMode.id,
+      },
+      {
+        name: 'Gbaka',
+        slug: slugify('Gbaka'),
+        code: 'GBK',
+        company_id: privateCompany.id,
         mode_id: miniCarMode.id,
       },
       {
-        name: 'wôrô-wôrô',
-        company_id: privateCompagny.id,
+        name: 'Wôrô-wôrô',
+        slug: slugify('Wôrô-wôrô'),
+        code: 'WRW',
+        company_id: privateCompany.id,
         mode_id: taxiMode.id,
       },
     ])

@@ -61,10 +61,6 @@ export const transportTypesRelations = relations(
       fields: [transportTypesTable.company_id],
       references: [transportCompaniesTable.id],
     }),
-    mode: one(modes, {
-      fields: [transportTypesTable.mode_id],
-      references: [modes.id],
-    }),
     transportLines: many(transportLinesTable),
   }),
 );
@@ -77,16 +73,12 @@ export const transportLinesRelations = relations(
       references: [transportCompaniesTable.id],
     }),
     type: one(transportTypesTable, {
-      fields: [transportLinesTable.type_id],
+      fields: [transportLinesTable.transport_type_id],
       references: [transportTypesTable.id],
     }),
     city: one(citiesTable, {
       fields: [transportLinesTable.city_id],
       references: [citiesTable.id],
-    }),
-    mode: one(modes, {
-      fields: [transportLinesTable.mode_id],
-      references: [modes.id],
     }),
     start_commune: one(communesTable, {
       fields: [transportLinesTable.start_commune_id],

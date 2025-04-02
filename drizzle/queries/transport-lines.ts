@@ -3,16 +3,17 @@
 import { and, eq, ilike } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/pg-core';
 import { orm } from '../../database';
-import { TransportLineResult } from '../../transport-ingest/transport-ingest.type';
+import {
+  TransportGeometry,
+  TransportLineResult,
+} from '../../transport-lines/transport-lines.model';
 import { communesTable, transportLinesTable } from '../schema';
-
-type GeometryCoordinates = [number, number][];
 
 export function getAllTransportLines() {
   return orm
     .select()
     .from(transportLinesTable)
-    .orderBy(transportLinesTable.name);
+    .orderBy(transportLinesTable.slug); // Ensure slugs are generated using the slugify function
 }
 
 export async function getTransportLineById(id: string) {
@@ -66,8 +67,7 @@ export async function getTransportLinesBetween(
     ...item,
     line: {
       ...item.line,
-      geometry_coordinates: item.line
-        .geometry_coordinates as GeometryCoordinates,
+      geometry: item.line.geometry as TransportGeometry,
     },
   }));
 }
