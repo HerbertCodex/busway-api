@@ -1,135 +1,147 @@
 <!-- @format -->
 
-# URL Shortener Starter
+# Busway API
 
-This is an Encore starter for a URL Shortener. It has two API endpoints and a PostgreSQL database to store the URL IDs
-and retrieve the full URL given an ID.
+This API provides data about transport lines and uses a pub/sub system to communicate with a Kotlin mobile app, allowing the app to update its local database.
 
-## Build from scratch with a tutorial
+## Prérequis
 
-If you prefer to built it yourself, check out the [tutorial](https://encore.dev/docs/ts/tutorials/rest-api) to learn how to build this application from scratch.
+**Installer Encore :**
 
-## Prerequisites
+- **macOS :** `brew install encoredev/tap/encore`
+- **Linux :** `curl -L https://encore.dev/install.sh | bash`
+- **Windows :** `iwr https://encore.dev/install.ps1 | iex`
 
-**Install Encore:**
+**Docker :**
 
-- **macOS:** `brew install encoredev/tap/encore`
-- **Linux:** `curl -L https://encore.dev/install.sh | bash`
-- **Windows:** `iwr https://encore.dev/install.ps1 | iex`
+1.  [Installer Docker](https://docker.com)
+2.  Démarrer Docker
 
-**Docker:**
+## Créer une application
 
-1. [Install Docker](https://docker.com)
-2. Start Docker
-
-## Create app
-
-Create a local app from this template:
+Créer une application locale à partir de ce modèle :
 
 ```bash
 encore app create my-app-name --example=ts/url-shortener
 ```
 
-## Create Encore Module
+## Créer un module Encore
 
 ```bash
 npm run gen:module
 ```
 
-## Add Variable env
+## Ajouter une variable d'environnement
 
 ```bash
 npm run add:env
 ```
 
-## Run app locally
+## Exécuter l'application localement
 
-Before running your application, make sure you have Docker installed and running. Then run this command from your application's root folder:
+Avant d'exécuter votre application, assurez-vous que Docker est installé et en cours d'exécution. Ensuite, exécutez cette commande depuis le dossier racine de votre application :
 
 ```bash
 encore run
 ```
 
-## Using the API
+## Utilisation de l'API
 
-### url.shorten — Shortens a URL and adds it to the database
+Voici quelques exemples d'utilisation de l'API :
 
-```bash
-curl 'http://127.0.0.1:4000/url' -d '{"url":"https://google.com"}'
-```
-
-### url.get — Gets a URL from the database using a short ID
+### Récupérer une liste paginée de villes
 
 ```bash
-curl 'http://127.0.0.1:4000/url/:id'
+curl "http://localhost:4000/cities?page=1&pageSize=10"
 ```
 
-### url.list — Lists all shortened URLs
+### Déclencher l'ingestion des données de transport (preview)
 
 ```bash
-curl 'http://127.0.0.1:4000/url'
+curl "http://localhost:4000/transport-ingest"
 ```
 
-## Open the developer dashboard
-
-While `encore run` is running, open [http://localhost:9400](http://localhost:9400) to access Encore's [local developer dashboard](https://encore.dev/docs/ts/observability/dev-dash).
-
-Here you can see API docs, make requests in the API explorer, and view traces of the responses.
-
-## Using the API
-
-To see that your app is running, you can ping the API to shorten a url.
+### Déclencher l'ingestion complète des données de transport
 
 ```bash
-curl 'http://localhost:4000/url' -d '{"url":"https://news.ycombinator.com"}'
+curl -X POST "http://localhost:4000/transport-ingest"
 ```
 
-When you ping the API, you will see traces and logs appearing in the local development dashboard: [http://localhost:9400](http://localhost:9400)
+## Ouvrir le tableau de bord développeur
 
-## Connecting to databases
+Pendant que `encore run` est en cours d'exécution, ouvrez [http://localhost:9400](http://localhost:9400) pour accéder au [tableau de bord développeur local](https://encore.dev/docs/ts/observability/dev-dash) d'Encore.
 
-You can connect to your databases via psql shell:
+Vous pouvez y consulter la documentation de l'API, effectuer des requêtes dans l'explorateur d'API et afficher les traces des réponses.
+
+## Se connecter aux bases de données
+
+Vous pouvez vous connecter à vos bases de données via le shell psql :
 
 ```bash
-encore db shell <database-name> --env=local --superuser
+encore db shell <nom-de-la-base-de-données> --env=local --superuser
 ```
 
-Learn more in the [CLI docs](https://encore.dev/docs/ts/cli/cli-reference#database-management).
+Pour en savoir plus, consultez la [documentation CLI](https://encore.dev/docs/ts/cli/cli-reference#database-management).
 
-## Deployment
+## Déploiement
 
-### Self-hosting
+### Auto-hébergement
 
-See the [self-hosting instructions](https://encore.dev/docs/ts/self-host/build) for how to use `encore build docker` to create a Docker image and configure it.
+Consultez les [instructions d'auto-hébergement](https://encore.dev/docs/ts/self-host/build) pour savoir comment utiliser `encore build docker` afin de créer une image Docker et de la configurer.
 
-### Encore Cloud Platform
+### Plateforme Cloud Encore
 
-Deploy your application to a free staging environment in Encore's development cloud using `git push encore`:
+Déployez votre application dans un environnement de staging gratuit dans le cloud de développement d'Encore en utilisant `git push encore` :
 
 ```bash
 git add -A .
-git commit -m 'Commit message'
+git commit -m 'Message de commit'
 git push encore
 ```
 
-You can also open your app in the [Cloud Dashboard](https://app.encore.dev) to integrate with GitHub, or connect your AWS/GCP account, enabling Encore to automatically handle cloud deployments for you.
+Vous pouvez également ouvrir votre application dans le [Tableau de bord Cloud](https://app.encore.dev) pour l'intégrer à GitHub, ou connecter votre compte AWS/GCP, ce qui permet à Encore de gérer automatiquement les déploiements cloud pour vous.
 
-## Link to GitHub
+## Lien vers GitHub
 
-Follow these steps to link your app to GitHub:
+Suivez ces étapes pour lier votre application à GitHub :
 
-1. Create a GitHub repo, commit and push the app.
-2. Open your app in the [Cloud Dashboard](https://app.encore.dev).
-3. Go to **Settings ➔ GitHub** and click on **Link app to GitHub** to link your app to GitHub and select the repo you just created.
-4. To configure Encore to automatically trigger deploys when you push to a specific branch name, go to the **Overview** page for your intended environment. Click on **Settings** and then in the section **Branch Push** configure the **Branch name** and hit **Save**.
-5. Commit and push a change to GitHub to trigger a deploy.
+1.  Créez un dépôt GitHub, committez et poussez l'application.
+2.  Ouvrez votre application dans le [Tableau de bord Cloud](https://app.encore.dev).
+3.  Allez dans **Paramètres ➔ GitHub** et cliquez sur **Lier l'application à GitHub** pour lier votre application à GitHub et sélectionnez le dépôt que vous venez de créer.
+4.  Pour configurer Encore afin de déclencher automatiquement les déploiements lorsque vous poussez vers un nom de branche spécifique, allez dans la page **Aperçu** de votre environnement prévu. Cliquez sur **Paramètres**, puis dans la section **Branch Push**, configurez le **Nom de la branche** et cliquez sur **Enregistrer**.
+5.  Committez et poussez une modification vers GitHub pour déclencher un déploiement.
 
-[Learn more in the docs](https://encore.dev/docs/platform/integrations/github)
+[Pour en savoir plus, consultez la documentation](https://encore.dev/docs/platform/integrations/github)
 
-## Testing
+## Tests
 
-To run tests, configure the `test` command in your `package.json` to the test runner of your choice, and then use the command `encore test` from the CLI. The `encore test` command sets up all the necessary infrastructure in test mode before handing over to the test runner. [Learn more](https://encore.dev/docs/ts/develop/testing)
+Pour exécuter les tests, configurez la commande `test` dans votre `package.json` avec le lanceur de tests de votre choix, puis utilisez la commande `encore test` depuis la CLI. La commande `encore test` met en place toute l'infrastructure nécessaire en mode test avant de passer la main au lanceur de tests. [Pour en savoir plus](https://encore.dev/docs/ts/develop/testing)
 
 ```bash
 encore test
 ```
+
+## Structure du Projet
+
+- `drizzle`: Contains elements for the Drizzle ORM.
+- `src`: Contains the project files.
+- `scripts_encore`: Contains custom scripts.
+
+## Dépendances Principales
+
+- `Drizzle ORM`: Used for database queries.
+
+## Pour les Développeurs
+
+To contribute to this project, follow these steps:
+
+1.  Install Encore and Docker (see "Prérequis" section).
+2.  Create a local app from this template (see "Créer une application" section).
+3.  Run `npm install` to install the project dependencies.
+4.  Configure the environment variables (if needed).
+5.  Run `encore run` to start the application locally.
+6.  Make your changes and submit a pull request.
+
+## Utilisation d'Encore.dev
+
+Encore.dev is the framework used to build this application.

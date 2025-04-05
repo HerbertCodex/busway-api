@@ -101,5 +101,24 @@ export interface ICommune {
 export interface TransportLineResult {
   start: ICommune;
   end: ICommune;
-  line: TransportLine;
+  line: ITransportLine;
+}
+
+export interface ITransportLine {
+  id: string;
+  line: string;
+  slug: string;
+  line_number: string | null;
+  opening_hours: string | null;
+  company_id: string;
+  transport_type_id: string;
+  city_id: string;
+  start_commune_id: string;
+  end_commune_id: string;
+  geometry: TransportGeometry;
+  data_version: number;
+  synced_at: Date;
+  metadata_id: string;
+  created_at: Date;
+  updated_at: Date;
 }

@@ -1,6 +1,6 @@
 /** @format */
 
-import { eq, sql } from 'drizzle-orm';
+import { count, eq } from 'drizzle-orm';
 import { APIError, ErrCode } from 'encore.dev/api';
 import log from 'encore.dev/log';
 import { orm } from '../../database';
@@ -33,15 +33,13 @@ export class PGCityRepository implements ICityRepository {
           return rows.map(City.fromDb);
         },
         async () => {
-          const [row] = await orm
-            .select({ count: sql<number>`cast(count(*) as integer)` })
-            .from(citiesTable);
+          const [row] = await orm.select({ count: count() }).from(citiesTable);
           return row.count;
         },
         options,
       );
     } catch (error) {
-      log.error('Error paginating cities:', error);
+      log.error('Error paginating cities:', { options, error });
       throw new APIError(ErrCode.Internal, 'Failed to fetch paginated cities');
     }
   }
@@ -61,8 +59,14 @@ export class PGCityRepository implements ICityRepository {
       }
       return City.fromDb(city);
     } catch (error) {
-      log.error('Error fetching city by slug:', error);
-      throw new APIError(ErrCode.Internal, 'Failed to fetch city by slug');
+      if (error instanceof APIError && error.code === ErrCode.NotFound) {
+        throw error;
+      }
+      log.error('Error fetching city by slug:', { slug, error });
+      throw new APIError(
+        ErrCode.Internal,
+        `Failed to fetch city with slug '${slug}'`,
+      );
     }
   }
 }

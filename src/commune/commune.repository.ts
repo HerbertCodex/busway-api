@@ -1,21 +1,56 @@
 /** @format */
 
-import { eq } from 'drizzle-orm';
+import { count, eq } from 'drizzle-orm';
 import { APIError, ErrCode } from 'encore.dev/api';
 import log from 'encore.dev/log';
 import { orm } from '../../database';
 import { communesTable } from '../../drizzle/schema';
+import { paginate } from '../common/pagination/helpers';
+import {
+  PaginationOptions,
+  PaginationResponse,
+} from '../common/pagination/types';
 import { Commune } from './commune.model';
 
 export interface ICommuneRepository {
-  getAllCommunes(): Promise<Commune[]>;
+  getAllCommunes(
+    options: PaginationOptions,
+  ): Promise<PaginationResponse<Commune>>;
   getCommuneBySlug(slug: string): Promise<Commune>;
 }
 
 export class PGCommuneRepository implements ICommuneRepository {
-  async getAllCommunes(): Promise<Commune[]> {
-    throw new Error('Method not implemented.');
+  async getAllCommunes(
+    options: PaginationOptions,
+  ): Promise<PaginationResponse<Commune>> {
+    try {
+      return await paginate<Commune>(
+        async ({ limit, offset }) => {
+          const rows = await orm
+            .select()
+            .from(communesTable)
+            .orderBy(communesTable.slug)
+            .limit(limit)
+            .offset(offset);
+          return rows.map(Commune.fromDb);
+        },
+        async () => {
+          const [row] = await orm
+            .select({ count: count() })
+            .from(communesTable);
+          return row.count;
+        },
+        options,
+      );
+    } catch (error) {
+      log.error('Error paginating communes:', { options, error });
+      throw new APIError(
+        ErrCode.Internal,
+        'Failed to fetch paginated communes',
+      );
+    }
   }
+
   async getCommuneBySlug(slug: string): Promise<Commune> {
     try {
       const [commune] = await orm
