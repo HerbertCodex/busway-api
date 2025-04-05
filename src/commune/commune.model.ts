@@ -23,6 +23,7 @@ export class Commune {
     );
   }
 }
+
 export interface CommuneRow {
   id: string;
   name: string;

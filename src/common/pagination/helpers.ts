@@ -11,26 +11,38 @@ export function resolvePagination(
   options: PaginationOptions,
   defaultPageSize = 10,
 ): PaginationParams {
-  const limit = options.pageSize ?? options.limit ?? defaultPageSize;
-  const page =
+  const pageSize = Math.max(
+    1,
+    options.pageSize ?? options.limit ?? defaultPageSize,
+  );
+  const page = Math.max(
+    1,
     options.page ??
-    (options.offset !== undefined ? Math.floor(options.offset / limit) + 1 : 1);
-  const offset = (page - 1) * limit;
+      (options.offset !== undefined
+        ? Math.floor(options.offset / pageSize) + 1
+        : 1),
+  );
+  const offset = (page - 1) * pageSize;
 
-  return { limit, offset };
+  return { limit: pageSize, offset };
 }
 
 export function buildPaginationResponse<T>(
   result: PaginationResult<T>,
   options: PaginationOptions,
 ): PaginationResponse<T> {
-  const pageSize = options.pageSize ?? options.limit ?? result.limit;
-  const currentPage =
+  const pageSize = Math.max(
+    1,
+    options.pageSize ?? options.limit ?? result.limit,
+  );
+  const currentPage = Math.max(
+    1,
     options.page ??
-    (options.offset !== undefined
-      ? Math.floor(options.offset / pageSize) + 1
-      : 1);
-  const totalPages = Math.ceil(result.total / pageSize);
+      (options.offset !== undefined
+        ? Math.floor(options.offset / pageSize) + 1
+        : 1),
+  );
+  const totalPages = Math.max(1, Math.ceil(result.total / pageSize));
 
   const hasPrevious = currentPage > 1;
   const hasNext = currentPage < totalPages;

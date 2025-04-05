@@ -1,6 +1,6 @@
 /** @format */
 
-import { eq, sql } from 'drizzle-orm';
+import { count, eq } from 'drizzle-orm';
 import { APIError, ErrCode } from 'encore.dev/api';
 import log from 'encore.dev/log';
 import { orm } from '../../database';
@@ -39,14 +39,14 @@ export class PGTransportCompanyRepository
         },
         async () => {
           const [row] = await orm
-            .select({ count: sql<number>`cast(count(*) as integer)` })
+            .select({ count: count() })
             .from(transportCompaniesTable);
           return row.count;
         },
         options,
       );
     } catch (error) {
-      log.error('Error paginating transport companies:', error);
+      log.error('Error paginating transport companies:', { options, error });
       throw new APIError(
         ErrCode.Internal,
         'Failed to fetch paginated transport companies',
@@ -71,10 +71,13 @@ export class PGTransportCompanyRepository
 
       return TransportCompany.fromDb(transportCompany);
     } catch (error) {
-      log.error('Error fetching transport company by slug:', error);
+      if (error instanceof APIError && error.code === ErrCode.NotFound) {
+        throw error;
+      }
+      log.error('Error fetching transport company by slug:', { slug, error });
       throw new APIError(
         ErrCode.Internal,
-        'Failed to fetch transport company by slug',
+        `Failed to fetch transport company with slug '${slug}'`,
       );
     }
   }
