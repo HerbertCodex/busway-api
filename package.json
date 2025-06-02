@@ -23,11 +23,7 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.41.0",
-<<<<<<< HEAD
     "encore.dev": "^1.48.2",
-=======
-    "encore.dev": "^1.46.16",
->>>>>>> b5cf061 (feat(transport): implement transport ingest service and API; add fetchJson utility and GeoJSON handling)
     "inquirer": "^12.5.0",
     "pg": "^8.14.1"
   },
