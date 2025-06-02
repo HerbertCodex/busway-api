@@ -129,6 +129,19 @@ export const transportLinesTable = p.pgTable(
   ],
 );
 
+export const transportLineVersionsTable = p.pgTable('transport_line_versions', {
+  id: p.uuid().primaryKey().defaultRandom(),
+  transport_line_id: p
+    .uuid()
+    .notNull()
+    .references(() => transportLinesTable.id),
+  geometry: p.json().notNull(),
+  valid_from: p.timestamp().notNull(),
+  valid_until: p.timestamp(),
+  reason: p.text(), // ex: "Travaux rue X"
+  created_at: p.timestamp().notNull().defaultNow(),
+});
+
 export const schema = {
   citiesTable,
   communesTable,
@@ -138,4 +151,5 @@ export const schema = {
   transportCompaniesTable,
   transportLinesTable,
   transportTypesTable,
+  transportLineVersionsTable,
 };

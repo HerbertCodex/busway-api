@@ -9,6 +9,7 @@ import {
   modes,
   transportCompaniesTable,
   transportLinesTable,
+  transportLineVersionsTable,
   transportTypesTable,
 } from './schema';
 
@@ -67,7 +68,7 @@ export const transportTypesRelations = relations(
 
 export const transportLinesRelations = relations(
   transportLinesTable,
-  ({ one }) => ({
+  ({ one, many }) => ({
     company: one(transportCompaniesTable, {
       fields: [transportLinesTable.company_id],
       references: [transportCompaniesTable.id],
@@ -93,6 +94,17 @@ export const transportLinesRelations = relations(
     metadata: one(dataMetadataTable, {
       fields: [transportLinesTable.metadata_id],
       references: [dataMetadataTable.id],
+    }),
+    versions: many(transportLineVersionsTable),
+  }),
+);
+
+export const transportLineVersionsRelations = relations(
+  transportLineVersionsTable,
+  ({ one }) => ({
+    transport_line: one(transportLinesTable, {
+      fields: [transportLineVersionsTable.transport_line_id],
+      references: [transportLinesTable.id],
     }),
   }),
 );
