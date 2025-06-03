@@ -23,7 +23,7 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.41.0",
-    "encore.dev": "^1.46.16",
+    "encore.dev": "^1.48.3",
     "inquirer": "^12.5.0",
     "pg": "^8.14.1"
   },
