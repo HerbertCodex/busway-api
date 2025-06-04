@@ -5,7 +5,7 @@ import {
   PaginationOptions,
   PaginationResponse,
 } from '../common/pagination/types';
-import { Commune } from './commune.model';
+import { Commune, CommuneRow } from './commune.model';
 import { PGCommuneRepository } from './commune.repository';
 
 const CommuneRepository = new PGCommuneRepository();
@@ -27,7 +27,7 @@ const CommuneService = {
 
   async getAllCommunes(
     options: PaginationOptions,
-  ): Promise<PaginationResponse<Commune>> {
+  ): Promise<PaginationResponse<CommuneRow>> {
     try {
       return await CommuneRepository.getAllCommunes(options);
     } catch (error) {

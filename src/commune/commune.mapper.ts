@@ -2,9 +2,9 @@
 
 import { mapPaginationResponse } from '../common/pagination/helpers';
 import { PaginationResponse } from '../common/pagination/types';
-import { Commune, CommuneDTO } from './commune.model';
+import { CommuneDTO, CommuneRow } from './commune.model';
 
-export function mapCommuneToDTO(commune: Commune): CommuneDTO {
+export function mapCommuneToDTO(commune: CommuneRow): CommuneDTO {
   return {
     id: commune.id,
     name: commune.name,
@@ -17,7 +17,7 @@ export function mapCommuneToDTO(commune: Commune): CommuneDTO {
 }
 
 export function paginateCommunesToDTO(
-  paginated: PaginationResponse<Commune>,
+  paginated: PaginationResponse<CommuneRow>,
 ): PaginationResponse<CommuneDTO> {
   return mapPaginationResponse(paginated, mapCommuneToDTO);
 }
