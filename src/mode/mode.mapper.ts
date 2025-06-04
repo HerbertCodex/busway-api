@@ -1,9 +1,10 @@
 /** @format */
 
+import { mapPaginationResponse } from '../common/pagination/helpers';
 import { PaginationResponse } from '../common/pagination/types';
-import { Mode, ModeDTO, ModeRow } from './mode.model';
+import { Mode, ModeDTO } from './mode.model';
 
-export function toModeDTO(model: Mode): ModeDTO {
+export function mapModeToDTO(model: Mode): ModeDTO {
   return {
     id: model.id,
     name: model.name,
@@ -15,25 +16,8 @@ export function toModeDTO(model: Mode): ModeDTO {
   };
 }
 
-export function rowToModeDTO(row: ModeRow): ModeDTO {
-  const model = Mode.fromDb(row);
-  return toModeDTO(model);
-}
-
 export function paginateToModeDTO(
   paginated: PaginationResponse<Mode>,
 ): PaginationResponse<ModeDTO> {
-  return {
-    data: paginated.data.map(m => toModeDTO(m)),
-    total: paginated.total,
-    limit: paginated.limit,
-    offset: paginated.offset,
-    hasNext: paginated.hasNext,
-    hasPrevious: paginated.hasPrevious,
-    nextOffset: paginated.nextOffset,
-    previousOffset: paginated.previousOffset,
-    totalPages: paginated.totalPages,
-    currentPage: paginated.currentPage,
-    pageSize: paginated.pageSize,
-  };
+  return mapPaginationResponse(paginated, mapModeToDTO);
 }

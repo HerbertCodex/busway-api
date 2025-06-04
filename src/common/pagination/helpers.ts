@@ -83,3 +83,25 @@ export async function paginate<T>(
 
   return buildPaginationResponse(result, options);
 }
+
+/**
+ * Mappe une PaginationResponse<T> en PaginationResponse<U> à l’aide d’une fonction mapperFn.
+ */
+export function mapPaginationResponse<T, U>(
+  paginated: PaginationResponse<T>,
+  mapperFn: (item: T) => U,
+): PaginationResponse<U> {
+  return {
+    data: paginated.data.map(mapperFn),
+    total: paginated.total,
+    limit: paginated.limit,
+    offset: paginated.offset,
+    hasNext: paginated.hasNext,
+    hasPrevious: paginated.hasPrevious,
+    nextOffset: paginated.nextOffset,
+    previousOffset: paginated.previousOffset,
+    totalPages: paginated.totalPages,
+    currentPage: paginated.currentPage,
+    pageSize: paginated.pageSize,
+  };
+}

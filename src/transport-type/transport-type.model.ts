@@ -24,6 +24,19 @@ export class TransportType {
       row.updated_at,
     );
   }
+
+  static toDTO(transportType: TransportType): TransportTypeDTO {
+    return {
+      id: transportType.id,
+      name: transportType.name,
+      slug: transportType.slug,
+      code: transportType.code,
+      companyId: transportType.company_id,
+      modeId: transportType.mode_id,
+      createdAt: transportType.created_at,
+      updatedAt: transportType.updated_at,
+    };
+  }
 }
 
 export interface TransportTypeRow {
@@ -35,4 +48,15 @@ export interface TransportTypeRow {
   mode_id: string;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface TransportTypeDTO {
+  id: string;
+  name: string;
+  slug: string;
+  code: string;
+  companyId: string;
+  modeId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
