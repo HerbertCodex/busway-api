@@ -6,7 +6,7 @@ import {
   communesTable,
   countriesTable,
   dataMetadataTable,
-  modes,
+  modesTable,
   transportCompaniesTable,
   transportTypesTable,
 } from './schema';
@@ -157,7 +157,7 @@ export async function seed() {
 
   // Insertion des modes de transport
   const [busMode, miniCarMode, taxiMode, ferryMode] = await drizzleDb
-    .insert(modes)
+    .insert(modesTable)
     .values([
       {
         name: 'Bus',

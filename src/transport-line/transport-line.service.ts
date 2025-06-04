@@ -3,7 +3,7 @@
 import { APIError, ErrCode } from 'encore.dev/api';
 import log from 'encore.dev/log';
 import { orm } from '../../database';
-import { modes, transportCompaniesTable } from '../../drizzle/schema';
+import { modesTable, transportCompaniesTable } from '../../drizzle/schema';
 import { slugify } from '../../drizzle/seed';
 import { normalizeText } from '../common/normalizeText';
 import { fetchTransportGeoJson } from './transport-line.client';
@@ -186,7 +186,7 @@ export async function ingestTransportFeature(
       transportCompaniesTable.name,
       normalizedOperator,
     ),
-    getByNameInsensitive(orm.query.modes, modes.name, normalizedMode),
+    getByNameInsensitive(orm.query.modesTable, modesTable.name, normalizedMode),
   ]);
 
   if (!companyId || !modeId) {

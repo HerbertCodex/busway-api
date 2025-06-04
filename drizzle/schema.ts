@@ -62,13 +62,13 @@ export const transportTypesTable = p.pgTable('transport_types', {
   mode_id: p
     .uuid()
     .notNull()
-    .references(() => modes.id),
+    .references(() => modesTable.id),
 
   created_at: p.timestamp().notNull().defaultNow(),
   updated_at: p.timestamp().notNull().defaultNow(),
 });
 
-export const modes = p.pgTable('modes', {
+export const modesTable = p.pgTable('modes', {
   id: p.uuid().primaryKey().defaultRandom(),
   name: p.text().unique().notNull(),
   slug: p.text().unique().notNull(),
@@ -147,7 +147,7 @@ export const schema = {
   communesTable,
   countriesTable,
   dataMetadataTable,
-  modes,
+  modesTable,
   transportCompaniesTable,
   transportLinesTable,
   transportTypesTable,
