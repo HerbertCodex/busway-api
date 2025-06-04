@@ -2,8 +2,8 @@
 
 import { api } from 'encore.dev/api';
 import { PaginationResponse } from '../common/pagination/types';
-import { mapModeToDTO, paginateToModeDTO } from './mode.mapper';
-import { Mode, ModeDTO } from './mode.model';
+import { mapModeToDTO, paginateModesToDTO } from './mode.mapper';
+import { Mode, ModeDTO, ModeRow } from './mode.model';
 import ModeService from './mode.service';
 
 export const getModes = api(
@@ -15,9 +15,9 @@ export const getModes = api(
     page?: number;
     pageSize?: number;
   }): Promise<PaginationResponse<ModeDTO>> => {
-    const paginatedEntities: PaginationResponse<Mode> =
+    const paginatedEntities: PaginationResponse<ModeRow> =
       await ModeService.getAllModes(params);
-    return paginateToModeDTO(paginatedEntities);
+    return paginateModesToDTO(paginatedEntities);
   },
 );
 

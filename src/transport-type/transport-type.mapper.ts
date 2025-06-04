@@ -19,7 +19,7 @@ export function mapTransportTypeToDTO(
   };
 }
 
-export function paginatedTransportTypesToDTO(
+export function paginateTransportTypesToDTO(
   paginated: PaginationResponse<TransportType>,
 ): PaginationResponse<TransportTypeDTO> {
   return mapPaginationResponse(paginated, mapTransportTypeToDTO);

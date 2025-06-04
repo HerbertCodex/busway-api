@@ -16,7 +16,7 @@ export function mapModeToDTO(model: Mode): ModeDTO {
   };
 }
 
-export function paginateToModeDTO(
+export function paginateModesToDTO(
   paginated: PaginationResponse<Mode>,
 ): PaginationResponse<ModeDTO> {
   return mapPaginationResponse(paginated, mapModeToDTO);

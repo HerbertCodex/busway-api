@@ -2,7 +2,8 @@
 
 import { api } from 'encore.dev/api';
 import { PaginationResponse } from '../common/pagination/types';
-import { CommuneRow } from './commune.model';
+import { mapCommuneToDTO, paginateCommunesToDTO } from './commune.mapper';
+import { Commune, CommuneDTO, CommuneRow } from './commune.model';
 import CommuneService from './commune.service';
 
 export const getCommunes = api(
@@ -13,9 +14,10 @@ export const getCommunes = api(
   async (params: {
     page?: number;
     pageSize?: number;
-  }): Promise<PaginationResponse<CommuneRow>> => {
-    const communes = await CommuneService.getAllCommunes(params);
-    return communes;
+  }): Promise<PaginationResponse<CommuneDTO>> => {
+    const paginatedEntities: PaginationResponse<CommuneRow> =
+      await CommuneService.getAllCommunes(params);
+    return paginateCommunesToDTO(paginatedEntities);
   },
 );
 
@@ -24,8 +26,10 @@ export const getCommuneBySlug = api(
     method: 'GET',
     path: '/communes/:slug',
   },
-  async (params: { slug: string }): Promise<CommuneRow> => {
-    const commune = await CommuneService.getCommuneBySlug(params.slug);
-    return commune;
+  async (params: { slug: string }): Promise<CommuneDTO> => {
+    const communeEntity: Commune = await CommuneService.getCommuneBySlug(
+      params.slug,
+    );
+    return mapCommuneToDTO(communeEntity);
   },
 );

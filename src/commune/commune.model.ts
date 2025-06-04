@@ -22,6 +22,18 @@ export class Commune {
       row.updated_at,
     );
   }
+
+  static toDTO(commune: Commune): CommuneDTO {
+    return {
+      id: commune.id,
+      name: commune.name,
+      slug: commune.slug,
+      code: commune.code,
+      cityId: commune.city_id,
+      createdAt: commune.created_at,
+      updatedAt: commune.updated_at,
+    };
+  }
 }
 
 export interface CommuneRow {
@@ -32,4 +44,14 @@ export interface CommuneRow {
   city_id: string;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface CommuneDTO {
+  id: string;
+  name: string;
+  slug: string;
+  code: string;
+  cityId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
