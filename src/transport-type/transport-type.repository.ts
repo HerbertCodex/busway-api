@@ -1,6 +1,6 @@
 /** @format */
 
-import { count } from 'drizzle-orm'; // Adjust the import path based on your ORM package
+import { count } from 'drizzle-orm';
 import { APIError, ErrCode } from 'encore.dev/api';
 import log from 'encore.dev/log';
 import { orm } from '../../database';

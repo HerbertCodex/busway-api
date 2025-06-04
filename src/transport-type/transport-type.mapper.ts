@@ -2,10 +2,10 @@
 
 import { mapPaginationResponse } from '../common/pagination/helpers';
 import { PaginationResponse } from '../common/pagination/types';
-import { TransportType, TransportTypeDTO } from './transport-type.model';
+import { TransportTypeDTO, TransportTypeRow } from './transport-type.model';
 
 export function mapTransportTypeToDTO(
-  transportType: TransportType,
+  transportType: TransportTypeRow,
 ): TransportTypeDTO {
   return {
     id: transportType.id,
@@ -20,7 +20,7 @@ export function mapTransportTypeToDTO(
 }
 
 export function paginateTransportTypesToDTO(
-  paginated: PaginationResponse<TransportType>,
+  paginated: PaginationResponse<TransportTypeRow>,
 ): PaginationResponse<TransportTypeDTO> {
   return mapPaginationResponse(paginated, mapTransportTypeToDTO);
 }

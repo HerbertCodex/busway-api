@@ -5,7 +5,7 @@ import {
   PaginationOptions,
   PaginationResponse,
 } from '../common/pagination/types';
-import { TransportType } from './transport-type.model';
+import { TransportTypeRow } from './transport-type.model';
 import { PGTransportTypeRepository } from './transport-type.repository';
 
 const TransportTypeRepository = new PGTransportTypeRepository();
@@ -13,7 +13,7 @@ const TransportTypeRepository = new PGTransportTypeRepository();
 const TransportTypeService = {
   async getAllTransportTypes(
     options: PaginationOptions,
-  ): Promise<PaginationResponse<TransportType>> {
+  ): Promise<PaginationResponse<TransportTypeRow>> {
     try {
       return await TransportTypeRepository.getAllTransportTypes(options);
     } catch (error) {

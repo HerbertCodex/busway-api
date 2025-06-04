@@ -23,7 +23,7 @@ export class Commune {
     );
   }
 
-  static toDTO(commune: Commune): CommuneDTO {
+  static toDTO(commune: CommuneRow): CommuneDTO {
     return {
       id: commune.id,
       name: commune.name,

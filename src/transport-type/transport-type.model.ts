@@ -25,7 +25,7 @@ export class TransportType {
     );
   }
 
-  static toDTO(transportType: TransportType): TransportTypeDTO {
+  static toDTO(transportType: TransportTypeRow): TransportTypeDTO {
     return {
       id: transportType.id,
       name: transportType.name,
