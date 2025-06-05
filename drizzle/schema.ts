@@ -78,7 +78,7 @@ export const modesTable = p.pgTable('modes', {
   updated_at: p.timestamp().notNull().defaultNow(),
 });
 
-export const dataMetadataTable = p.pgTable('data_metadata', {
+export const metadataTable = p.pgTable('metadata', {
   id: p.text().primaryKey(),
   last_version: p.integer().notNull().default(1),
   last_updated_at: p.timestamp().notNull().defaultNow(),
@@ -118,7 +118,7 @@ export const transportLinesTable = p.pgTable(
     metadata_id: p
       .text()
       .notNull()
-      .references(() => dataMetadataTable.id),
+      .references(() => metadataTable.id),
     created_at: p.timestamp().notNull().defaultNow(),
     updated_at: p.timestamp().notNull().defaultNow(),
   },
@@ -146,7 +146,7 @@ export const schema = {
   citiesTable,
   communesTable,
   countriesTable,
-  dataMetadataTable,
+  metadataTable,
   modesTable,
   transportCompaniesTable,
   transportLinesTable,

@@ -5,7 +5,7 @@ import {
   citiesTable,
   communesTable,
   countriesTable,
-  dataMetadataTable,
+  metadataTable,
   modesTable,
   transportCompaniesTable,
   transportTypesTable,
@@ -23,7 +23,7 @@ export async function seed() {
   console.log('🚀 Début du seed');
 
   await drizzleDb
-    .insert(dataMetadataTable)
+    .insert(metadataTable)
     .values({ id: 'default' })
     .onConflictDoNothing()
     .returning();
