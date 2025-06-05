@@ -22,6 +22,18 @@ export class TransportCompany {
       row.updated_at,
     );
   }
+
+  toDTO(): TransportCompanyDTO {
+    return {
+      id: this.id,
+      name: this.name,
+      slug: this.slug,
+      code: this.code,
+      countryId: this.country_id,
+      createdAt: this.created_at,
+      updatedAt: this.updated_at,
+    };
+  }
 }
 
 export interface TransportCompanyRow {
@@ -32,4 +44,14 @@ export interface TransportCompanyRow {
   country_id: string;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface TransportCompanyDTO {
+  id: string;
+  name: string;
+  slug: string;
+  code: string;
+  countryId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

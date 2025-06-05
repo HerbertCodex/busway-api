@@ -3,7 +3,7 @@
 import { api } from 'encore.dev/api';
 import { PaginationResponse } from '../common/pagination/types';
 import { mapCommuneToDTO, paginateCommunesToDTO } from './commune.mapper';
-import { Commune, CommuneDTO } from './commune.model';
+import { Commune, CommuneDTO, CommuneRow } from './commune.model';
 import CommuneService from './commune.service';
 
 export const getCommunes = api(
@@ -27,7 +27,7 @@ export const getCommuneBySlug = api(
     path: '/communes/:slug',
   },
   async (params: { slug: string }): Promise<CommuneDTO> => {
-    const communeEntity: Commune = await CommuneService.getCommuneBySlug(
+    const communeEntity: CommuneRow = await CommuneService.getCommuneBySlug(
       params.slug,
     );
     return mapCommuneToDTO(communeEntity);
