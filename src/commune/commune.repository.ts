@@ -10,7 +10,7 @@ import {
   PaginationOptions,
   PaginationResponse,
 } from '../common/pagination/types';
-import { Commune } from './commune.model';
+import { Commune, CommuneRow } from './commune.model';
 
 export interface ICommuneRepository {
   getAllCommunes(
@@ -22,9 +22,9 @@ export interface ICommuneRepository {
 export class PGCommuneRepository implements ICommuneRepository {
   async getAllCommunes(
     options: PaginationOptions,
-  ): Promise<PaginationResponse<Commune>> {
+  ): Promise<PaginationResponse<CommuneRow>> {
     try {
-      return await paginate<Commune>(
+      return await paginate<CommuneRow>(
         async ({ limit, offset }) => {
           const rows = await orm
             .select()
@@ -51,7 +51,7 @@ export class PGCommuneRepository implements ICommuneRepository {
     }
   }
 
-  async getCommuneBySlug(slug: string): Promise<Commune> {
+  async getCommuneBySlug(slug: string): Promise<CommuneRow> {
     try {
       const [commune] = await orm
         .select()

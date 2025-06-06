@@ -10,7 +10,7 @@ import {
   PaginationOptions,
   PaginationResponse,
 } from '../common/pagination/types';
-import { City } from './city.model';
+import { City, CityRow } from './city.model';
 
 export interface ICityRepository {
   getAllCities(options: PaginationOptions): Promise<PaginationResponse<City>>;
@@ -24,7 +24,7 @@ export class PGCityRepository implements ICityRepository {
     try {
       return await paginate<City>(
         async ({ limit, offset }) => {
-          const rows = await orm
+          const rows: CityRow[] = await orm
             .select()
             .from(citiesTable)
             .orderBy(citiesTable.slug)
@@ -46,7 +46,7 @@ export class PGCityRepository implements ICityRepository {
 
   async getCityBySlug(slug: string): Promise<City> {
     try {
-      const [city] = await orm
+      const [city]: CityRow[] = await orm
         .select()
         .from(citiesTable)
         .where(eq(citiesTable.slug, slug))

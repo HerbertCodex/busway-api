@@ -2,7 +2,8 @@
 
 import { api } from 'encore.dev/api';
 import { PaginationResponse } from '../common/pagination/types';
-import { CityRow } from './city.model';
+import { mapCityToDTO, paginateCitiesToDTO } from './city.mapper';
+import { City, CityDTO } from './city.model';
 import CityService from './city.service';
 
 export const getCities = api(
@@ -13,9 +14,10 @@ export const getCities = api(
   async (params: {
     page?: number;
     pageSize?: number;
-  }): Promise<PaginationResponse<CityRow>> => {
-    const cities = await CityService.getAllCities(params);
-    return cities;
+  }): Promise<PaginationResponse<CityDTO>> => {
+    const paginatedCities: PaginationResponse<City> =
+      await CityService.getAllCities(params);
+    return paginateCitiesToDTO(paginatedCities);
   },
 );
 
@@ -24,8 +26,8 @@ export const getCityBySlug = api(
     method: 'GET',
     path: '/cities/:slug',
   },
-  async (params: { slug: string }): Promise<CityRow> => {
-    const city = await CityService.getCityBySlug(params.slug);
-    return city;
+  async (params: { slug: string }): Promise<CityDTO> => {
+    const city: City = await CityService.getCityBySlug(params.slug);
+    return mapCityToDTO(city);
   },
 );

@@ -5,17 +5,17 @@ import {
   PaginationOptions,
   PaginationResponse,
 } from '../common/pagination/types';
-import { TransportTypeRow } from './transport-type.model';
-import { PGTransportTypeRepository } from './transport-type.repository';
+import { Metadata } from './metadata.model';
+import { PGMetadataRepository } from './metadata.repository';
 
-const TransportTypeRepository = new PGTransportTypeRepository();
+const MetadataRepository = new PGMetadataRepository();
 
-const TransportTypeService = {
-  async getAllTransportTypes(
+const MetadataService = {
+  async getAllMetadata(
     options: PaginationOptions,
-  ): Promise<PaginationResponse<TransportTypeRow>> {
+  ): Promise<PaginationResponse<Metadata>> {
     try {
-      return await TransportTypeRepository.getAllTransportTypes(options);
+      return await MetadataRepository.getAllMetadata(options);
     } catch (error) {
       if (error instanceof APIError) {
         throw new APIError(
@@ -28,4 +28,4 @@ const TransportTypeService = {
   },
 };
 
-export default TransportTypeService;
+export default MetadataService;

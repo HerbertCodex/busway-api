@@ -5,8 +5,8 @@ import {
   citiesTable,
   communesTable,
   countriesTable,
-  dataMetadataTable,
-  modes,
+  metadataTable,
+  modesTable,
   transportCompaniesTable,
   transportTypesTable,
 } from './schema';
@@ -23,7 +23,7 @@ export async function seed() {
   console.log('🚀 Début du seed');
 
   await drizzleDb
-    .insert(dataMetadataTable)
+    .insert(metadataTable)
     .values({ id: 'default' })
     .onConflictDoNothing()
     .returning();
@@ -157,7 +157,7 @@ export async function seed() {
 
   // Insertion des modes de transport
   const [busMode, miniCarMode, taxiMode, ferryMode] = await drizzleDb
-    .insert(modes)
+    .insert(modesTable)
     .values([
       {
         name: 'Bus',

@@ -5,15 +5,15 @@ import {
   PaginationOptions,
   PaginationResponse,
 } from '../common/pagination/types';
-import { Commune, CommuneRow } from './commune.model';
-import { PGCommuneRepository } from './commune.repository';
+import { Mode } from './mode.model';
+import { PGModeRepository } from './mode.repository';
 
-const CommuneRepository = new PGCommuneRepository();
+const ModeRepository = new PGModeRepository();
 
-const CommuneService = {
-  async getCommuneBySlug(slug: string): Promise<Commune> {
+const ModeService = {
+  async getModeBySlug(slug: string): Promise<Mode> {
     try {
-      return await CommuneRepository.getCommuneBySlug(slug);
+      return await ModeRepository.getModeBySlug(slug);
     } catch (error) {
       if (error instanceof APIError) {
         throw new APIError(
@@ -25,11 +25,11 @@ const CommuneService = {
     }
   },
 
-  async getAllCommunes(
+  async getAllModes(
     options: PaginationOptions,
-  ): Promise<PaginationResponse<CommuneRow>> {
+  ): Promise<PaginationResponse<Mode>> {
     try {
-      return await CommuneRepository.getAllCommunes(options);
+      return await ModeRepository.getAllModes(options);
     } catch (error) {
       if (error instanceof APIError) {
         throw new APIError(
@@ -42,4 +42,4 @@ const CommuneService = {
   },
 };
 
-export default CommuneService;
+export default ModeService;

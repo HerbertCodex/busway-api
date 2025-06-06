@@ -1,57 +1,57 @@
 /** @format */
 
-export class Commune {
+export class Mode {
   constructor(
     public id: string,
     public name: string,
     public slug: string,
     public code: string,
-    public city_id: string,
+    public description: string | null,
     public created_at: Date,
     public updated_at: Date,
   ) {}
 
-  static fromDb(row: CommuneRow): Commune {
-    return new Commune(
+  static fromDb(row: ModeRow): Mode {
+    return new Mode(
       row.id,
       row.name,
       row.slug,
       row.code,
-      row.city_id,
+      row.description,
       row.created_at,
       row.updated_at,
     );
   }
 
-  static toDTO(commune: CommuneRow): CommuneDTO {
+  static toDTO(mode: Mode): ModeDTO {
     return {
-      id: commune.id,
-      name: commune.name,
-      slug: commune.slug,
-      code: commune.code,
-      cityId: commune.city_id,
-      createdAt: commune.created_at,
-      updatedAt: commune.updated_at,
+      id: mode.id,
+      name: mode.name,
+      slug: mode.slug,
+      code: mode.code,
+      description: mode.description,
+      createdAt: mode.created_at,
+      updatedAt: mode.updated_at,
     };
   }
 }
 
-export interface CommuneRow {
+export interface ModeRow {
   id: string;
   name: string;
   slug: string;
   code: string;
-  city_id: string;
+  description: string | null;
   created_at: Date;
   updated_at: Date;
 }
 
-export interface CommuneDTO {
+export interface ModeDTO {
   id: string;
   name: string;
   slug: string;
   code: string;
-  cityId: string;
+  description: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

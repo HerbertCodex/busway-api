@@ -2,8 +2,9 @@
 
 import { api } from 'encore.dev/api';
 import { PaginationResponse } from '../common/pagination/types';
-import { TransportCompanyRow } from '../transport-company/transport-company.model';
-import TransportCompanyService from '../transport-company/transport-company.service';
+import { paginateTransportTypesToDTO } from './transport-type.mapper';
+import { TransportTypeDTO, TransportTypeRow } from './transport-type.model';
+import TransportTypeService from './transport-type.service';
 
 export const getTransportTypes = api(
   {
@@ -13,9 +14,9 @@ export const getTransportTypes = api(
   async (params: {
     page?: number;
     pageSize?: number;
-  }): Promise<PaginationResponse<TransportCompanyRow>> => {
-    const transportTypes =
-      await TransportCompanyService.getAllTransportCompanies(params);
-    return transportTypes;
+  }): Promise<PaginationResponse<TransportTypeDTO>> => {
+    const paginatedEntities: PaginationResponse<TransportTypeRow> =
+      await TransportTypeService.getAllTransportTypes(params);
+    return paginateTransportTypesToDTO(paginatedEntities);
   },
 );

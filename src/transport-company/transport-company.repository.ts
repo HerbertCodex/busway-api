@@ -10,7 +10,10 @@ import {
   PaginationOptions,
   PaginationResponse,
 } from '../common/pagination/types';
-import { TransportCompany } from './transport-company.model';
+import {
+  TransportCompany,
+  TransportCompanyRow,
+} from './transport-company.model';
 
 export interface ITransportCompanyRepository {
   getAllTransportCompanies(
@@ -29,19 +32,20 @@ export class PGTransportCompanyRepository
     try {
       return await paginate<TransportCompany>(
         async ({ limit, offset }) => {
-          const rows = await orm
+          const rows: TransportCompanyRow[] = await orm
             .select()
             .from(transportCompaniesTable)
             .orderBy(transportCompaniesTable.slug)
             .limit(limit)
             .offset(offset);
+
           return rows.map(TransportCompany.fromDb);
         },
         async () => {
-          const [row] = await orm
+          const [{ count: total }] = await orm
             .select({ count: count() })
             .from(transportCompaniesTable);
-          return row.count;
+          return total;
         },
         options,
       );
@@ -56,20 +60,20 @@ export class PGTransportCompanyRepository
 
   async getTransportCompanyBySlug(slug: string): Promise<TransportCompany> {
     try {
-      const [transportCompany] = await orm
+      const [row]: TransportCompanyRow[] = await orm
         .select()
         .from(transportCompaniesTable)
         .where(eq(transportCompaniesTable.slug, slug))
         .limit(1);
 
-      if (!transportCompany) {
+      if (!row) {
         throw new APIError(
           ErrCode.NotFound,
           `Transport company with slug '${slug}' not found`,
         );
       }
 
-      return TransportCompany.fromDb(transportCompany);
+      return TransportCompany.fromDb(row);
     } catch (error) {
       if (error instanceof APIError && error.code === ErrCode.NotFound) {
         throw error;

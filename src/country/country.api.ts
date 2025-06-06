@@ -2,7 +2,8 @@
 
 import { api } from 'encore.dev/api';
 import { PaginationResponse } from '../common/pagination/types';
-import { CountryRow } from './country.model';
+import { mapCountryToDTO, paginateCountriesToDTO } from './country.mapper';
+import { CountryDTO, CountryRow } from './country.model';
 import CountryService from './country.service';
 
 export const getCountries = api(
@@ -13,9 +14,10 @@ export const getCountries = api(
   async (params: {
     page?: number;
     pageSize?: number;
-  }): Promise<PaginationResponse<CountryRow>> => {
-    const countries = await CountryService.getAllCountries(params);
-    return countries;
+  }): Promise<PaginationResponse<CountryDTO>> => {
+    const paginatedEntities: PaginationResponse<CountryRow> =
+      await CountryService.getAllCountries(params);
+    return paginateCountriesToDTO(paginatedEntities);
   },
 );
 
@@ -24,8 +26,10 @@ export const getCountryBySlug = api(
     method: 'GET',
     path: '/countries/:slug',
   },
-  async (params: { slug: string }): Promise<CountryRow> => {
-    const country = await CountryService.getCountryBySlug(params.slug);
-    return country;
+  async (params: { slug: string }): Promise<CountryDTO> => {
+    const countryEntity: CountryRow = await CountryService.getCountryBySlug(
+      params.slug,
+    );
+    return mapCountryToDTO(countryEntity);
   },
 );

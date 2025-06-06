@@ -5,8 +5,8 @@ import {
   citiesTable,
   communesTable,
   countriesTable,
-  dataMetadataTable,
-  modes,
+  metadataTable,
+  modesTable,
   transportCompaniesTable,
   transportLinesTable,
   transportLineVersionsTable,
@@ -18,8 +18,8 @@ export const countriesRelations = relations(countriesTable, ({ many }) => ({
   transportCompanies: many(transportCompaniesTable),
 }));
 
-export const modesRelations = relations(modes, ({ many }) => ({
-  transportLines: many(transportLinesTable),
+export const modesRelations = relations(modesTable, ({ many }) => ({
+  transportTypes: many(transportTypesTable),
 }));
 
 export const communesRelations = relations(communesTable, ({ one, many }) => ({
@@ -27,12 +27,8 @@ export const communesRelations = relations(communesTable, ({ one, many }) => ({
     fields: [communesTable.city_id],
     references: [citiesTable.id],
   }),
-  startLines: many(transportLinesTable, {
-    relationName: 'start_commune',
-  }),
-  endLines: many(transportLinesTable, {
-    relationName: 'end_commune',
-  }),
+  startLines: many(transportLinesTable, { relationName: 'start_commune' }),
+  endLines: many(transportLinesTable, { relationName: 'end_commune' }),
 }));
 
 export const citiesRelations = relations(citiesTable, ({ one, many }) => ({
@@ -62,10 +58,28 @@ export const transportTypesRelations = relations(
       fields: [transportTypesTable.company_id],
       references: [transportCompaniesTable.id],
     }),
+    mode: one(modesTable, {
+      fields: [transportTypesTable.mode_id],
+      references: [modesTable.id],
+    }),
     transportLines: many(transportLinesTable),
   }),
 );
 
+/**
+ * Defines the relations for the `transportLinesTable` entity.
+ *
+ * - `company`: References the transport company associated with the line.
+ * - `type`: References the type of transport (e.g., bus, tram).
+ * - `city`: References the city where the transport line operates.
+ * - `start_commune`: References the starting commune of the transport line.
+ * - `end_commune`: References the ending commune of the transport line.
+ * - `metadata`: References additional metadata associated with the transport line.
+ * - `versions`: References all versions of the transport line.
+ *
+ * This configuration is used by Drizzle ORM to establish foreign key relationships
+ * and enable eager loading of related entities.
+ */
 export const transportLinesRelations = relations(
   transportLinesTable,
   ({ one, many }) => ({
@@ -91,9 +105,9 @@ export const transportLinesRelations = relations(
       references: [communesTable.id],
       relationName: 'end_commune',
     }),
-    metadata: one(dataMetadataTable, {
+    metadata: one(metadataTable, {
       fields: [transportLinesTable.metadata_id],
-      references: [dataMetadataTable.id],
+      references: [metadataTable.id],
     }),
     versions: many(transportLineVersionsTable),
   }),

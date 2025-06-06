@@ -10,7 +10,7 @@
     "gen:module": "tsx scripts_encore/create-module.ts",
     "add:env": "tsx scripts_encore/add-env-to-config.ts",
     "seed": "tsx drizzle/run-seed.ts",
-    "db:clear": "tsx scripts_encore/clearDb.ts"
+    "db:clear": "encore db reset --all"
   },
   "devDependencies": {
     "@types/node": "^20.5.7",

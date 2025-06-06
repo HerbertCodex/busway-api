@@ -1,5 +1,5 @@
 {
-  "id": "347886d7-b1a8-49f6-90c6-516a02485d8d",
+  "id": "17d56e94-482d-45fb-8912-88f5bc259f4e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -266,8 +266,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.data_metadata": {
-      "name": "data_metadata",
+    "public.metadata": {
+      "name": "metadata",
       "schema": "",
       "columns": {
         "id": {
@@ -469,6 +469,77 @@
           ]
         }
       },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.transport_line_versions": {
+      "name": "transport_line_versions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "transport_line_id": {
+          "name": "transport_line_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "geometry": {
+          "name": "geometry",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "valid_from": {
+          "name": "valid_from",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "valid_until": {
+          "name": "valid_until",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "transport_line_versions_transport_line_id_transport_lines_id_fk": {
+          "name": "transport_line_versions_transport_line_id_transport_lines_id_fk",
+          "tableFrom": "transport_line_versions",
+          "tableTo": "transport_lines",
+          "columnsFrom": [
+            "transport_line_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -692,10 +763,10 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "transport_lines_metadata_id_data_metadata_id_fk": {
-          "name": "transport_lines_metadata_id_data_metadata_id_fk",
+        "transport_lines_metadata_id_metadata_id_fk": {
+          "name": "transport_lines_metadata_id_metadata_id_fk",
           "tableFrom": "transport_lines",
-          "tableTo": "data_metadata",
+          "tableTo": "metadata",
           "columnsFrom": [
             "metadata_id"
           ],
