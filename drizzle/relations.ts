@@ -5,8 +5,8 @@ import {
   citiesTable,
   communesTable,
   countriesTable,
-  dataMetadataTable,
-  modes,
+  metadataTable,
+  modesTable,
   transportCompaniesTable,
   transportLinesTable,
   transportLineVersionsTable,
@@ -18,8 +18,8 @@ export const countriesRelations = relations(countriesTable, ({ many }) => ({
   transportCompanies: many(transportCompaniesTable),
 }));
 
-export const modesRelations = relations(modes, ({ many }) => ({
-  transportLines: many(transportLinesTable),
+export const modesRelations = relations(modesTable, ({ many }) => ({
+  transportTypes: many(transportTypesTable),
 }));
 
 export const communesRelations = relations(communesTable, ({ one, many }) => ({
@@ -27,12 +27,8 @@ export const communesRelations = relations(communesTable, ({ one, many }) => ({
     fields: [communesTable.city_id],
     references: [citiesTable.id],
   }),
-  startLines: many(transportLinesTable, {
-    relationName: 'start_commune',
-  }),
-  endLines: many(transportLinesTable, {
-    relationName: 'end_commune',
-  }),
+  startLines: many(transportLinesTable, { relationName: 'start_commune' }),
+  endLines: many(transportLinesTable, { relationName: 'end_commune' }),
 }));
 
 export const citiesRelations = relations(citiesTable, ({ one, many }) => ({
@@ -61,6 +57,10 @@ export const transportTypesRelations = relations(
     company: one(transportCompaniesTable, {
       fields: [transportTypesTable.company_id],
       references: [transportCompaniesTable.id],
+    }),
+    mode: one(modesTable, {
+      fields: [transportTypesTable.mode_id],
+      references: [modesTable.id],
     }),
     transportLines: many(transportLinesTable),
   }),
@@ -91,9 +91,9 @@ export const transportLinesRelations = relations(
       references: [communesTable.id],
       relationName: 'end_commune',
     }),
-    metadata: one(dataMetadataTable, {
+    metadata: one(metadataTable, {
       fields: [transportLinesTable.metadata_id],
-      references: [dataMetadataTable.id],
+      references: [metadataTable.id],
     }),
     versions: many(transportLineVersionsTable),
   }),
