@@ -66,6 +66,20 @@ export const transportTypesRelations = relations(
   }),
 );
 
+/**
+ * Defines the relations for the `transportLinesTable` entity.
+ *
+ * - `company`: References the transport company associated with the line.
+ * - `type`: References the type of transport (e.g., bus, tram).
+ * - `city`: References the city where the transport line operates.
+ * - `start_commune`: References the starting commune of the transport line.
+ * - `end_commune`: References the ending commune of the transport line.
+ * - `metadata`: References additional metadata associated with the transport line.
+ * - `versions`: References all versions of the transport line.
+ *
+ * This configuration is used by Drizzle ORM to establish foreign key relationships
+ * and enable eager loading of related entities.
+ */
 export const transportLinesRelations = relations(
   transportLinesTable,
   ({ one, many }) => ({
