@@ -2,7 +2,10 @@
 
 import { orm } from '../../database';
 import { transportLinesTable } from '../../drizzle/schema';
-import { TransportGeometry, TransportLine } from './transport-line.model';
+import {
+  TransportGeometry,
+  TransportLine,
+} from './transport-line-action.model';
 
 export interface ITransportLineRepository {
   createTransportLine(

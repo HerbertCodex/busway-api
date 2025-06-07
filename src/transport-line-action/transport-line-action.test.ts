@@ -1,8 +1,8 @@
 /** @format */
 
 import { describe, expect, it, vi } from 'vitest';
-import { GEOJSON_MULTILINESTRING } from './transport-line.model';
-import { ingestTransportData } from './transport-line.service';
+import { GEOJSON_MULTILINESTRING } from './transport-line-action.model';
+import { ingestTransportData } from './transport-line-action.service';
 
 // Mock d'Encore pour éviter l’erreur ENCORE_RUNTIME_LIB
 vi.mock('encore.dev', () => ({

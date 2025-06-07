@@ -6,24 +6,24 @@ import { orm } from '../../database';
 import { modesTable, transportCompaniesTable } from '../../drizzle/schema';
 import { slugify } from '../../drizzle/seed';
 import { normalizeText } from '../common/normalizeText';
-import { fetchTransportGeoJson } from './transport-line.client';
+import { fetchTransportGeoJson } from './transport-line-action.client';
 import {
   findCommuneByContainedName,
   findCommuneByExactNormalizedName,
   getByNameInsensitive,
   getCityIdByName,
   getTransportTypeId,
-} from './transport-line.helpers';
+} from './transport-line-action.helpers';
 import {
   GEOJSON_FEATURE_COLLECTION,
   GEOJSON_MULTILINESTRING,
   ITransportLineDownloadResponse,
   TTransportFeature,
-} from './transport-line.model';
+} from './transport-line-action.model';
 import {
   ITransportLineRepository,
   PGTransportLineRepository,
-} from './transport-line.repository';
+} from './transport-line-action.repository';
 
 const transportLineRepo: ITransportLineRepository =
   new PGTransportLineRepository();

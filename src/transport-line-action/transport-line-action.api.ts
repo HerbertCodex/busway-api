@@ -6,11 +6,11 @@ import {
   IIngestTransportResponse,
   Params,
   TransportLineResponse,
-} from './transport-line.model';
+} from './transport-line-action.model';
 import {
   ingestAllFeatures,
   ingestTransportData,
-} from './transport-line.service';
+} from './transport-line-action.service';
 
 export const ingestTransportPreview = api(
   {
