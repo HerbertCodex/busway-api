@@ -1,51 +1,10 @@
 /** @format */
 
-export type TMultiLineString = 'MultiLineString';
-export type TFeatureCollection = 'FeatureCollection';
-export type TFeature = 'Feature';
-export type TProperties = {
-  code?: string;
-  mode: string;
-  name: string;
-  network: string;
-  opening_hours?: string;
-  operator: string;
-};
-
-export type TransportGeometry = {
-  type: string;
-  coordinates: number[][][];
-};
-export type TTransportFeature = {
-  geometry: TransportGeometry;
-  properties: TProperties;
-};
-
-export const MIMETYPE_GEOJSON = 'application/geo+json';
-export const GEOJSON_FEATURE_COLLECTION = 'FeatureCollection';
-export const GEOJSON_FEATURE = 'Feature';
-export const GEOJSON_MULTILINESTRING = 'MultiLineString';
-
-export interface Params {
-  from: string;
-  to: string;
-}
-
-export interface IGeoJsonResource {
-  name: string;
-  key: string;
-  title: string;
-  mimetype: string;
-  size: number;
-  updatedAt: string;
-  url: string;
-}
-
 export class TransportLine {
   constructor(
     public id: string,
-    public line: string,
     public slug: string,
+    public line: string,
     public line_number: string | null,
     public opening_hours: string | null,
     public company_id: string,
@@ -53,61 +12,61 @@ export class TransportLine {
     public city_id: string,
     public start_commune_id: string,
     public end_commune_id: string,
-    public geometry: TransportGeometry,
+    public geometry: any, // Assuming geometry is a JSON object
     public data_version: number,
     public synced_at: Date,
     public metadata_id: string,
     public created_at: Date,
     public updated_at: Date,
   ) {}
+
+  static fromDb(row: TransportLineRow): TransportLine {
+    return new TransportLine(
+      row.id,
+      row.slug,
+      row.line,
+      row.line_number,
+      row.opening_hours,
+      row.company_id,
+      row.transport_type_id,
+      row.city_id,
+      row.start_commune_id,
+      row.end_commune_id,
+      row.geometry,
+      row.data_version,
+      row.synced_at,
+      row.metadata_id,
+      row.created_at,
+      row.updated_at,
+    );
+  }
+
+  toDTO(): TransportLineDTO {
+    return {
+      id: this.id,
+      slug: this.slug,
+      line: this.line,
+      lineNumber: this.line_number,
+      openingHours: this.opening_hours,
+      companyId: this.company_id,
+      transportTypeId: this.transport_type_id,
+      cityId: this.city_id,
+      startCommuneId: this.start_commune_id,
+      endCommuneId: this.end_commune_id,
+      geometry: this.geometry,
+      dataVersion: this.data_version,
+      syncedAt: this.synced_at,
+      metadataId: this.metadata_id,
+      createdAt: this.created_at,
+      updatedAt: this.updated_at,
+    };
+  }
 }
 
-export interface ITransportLineDownloadResponse {
-  name: string;
-  code: string;
-  operator: string;
-  network: string;
-  mode: string;
-  opening_hours: string;
-  geometry: TransportGeometry;
-}
-
-export interface IGeoJsonFeatureCollection {
-  type: TFeatureCollection;
-  features: Array<{
-    type: TFeature;
-    properties: Record<string, string>;
-    geometry: TransportGeometry;
-  }>;
-}
-
-export interface IIngestTransportResponse {
-  lines: ITransportLineDownloadResponse[];
-}
-
-export interface TransportLineResponse {
-  results: TransportLineResult[];
-}
-
-export interface ICommune {
+export interface TransportLineRow {
   id: string;
-  name: string;
-  code: string;
-  city_id: string;
-  created_at: Date;
-  updated_at: Date;
-}
-
-export interface TransportLineResult {
-  start: ICommune;
-  end: ICommune;
-  line: ITransportLine;
-}
-
-export interface ITransportLine {
-  id: string;
-  line: string;
   slug: string;
+  line: string;
   line_number: string | null;
   opening_hours: string | null;
   company_id: string;
@@ -115,10 +74,29 @@ export interface ITransportLine {
   city_id: string;
   start_commune_id: string;
   end_commune_id: string;
-  geometry: TransportGeometry;
+  geometry: any; // Assuming geometry is a JSON object
   data_version: number;
   synced_at: Date;
   metadata_id: string;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface TransportLineDTO {
+  id: string;
+  slug: string;
+  line: string;
+  lineNumber: string | null;
+  openingHours: string | null;
+  companyId: string;
+  transportTypeId: string;
+  cityId: string;
+  startCommuneId: string;
+  endCommuneId: string;
+  geometry: any; // Assuming geometry is a JSON object
+  dataVersion: number;
+  syncedAt: Date;
+  metadataId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

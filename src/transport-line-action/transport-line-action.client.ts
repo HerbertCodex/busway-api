@@ -8,7 +8,7 @@ import {
   IGeoJsonFeatureCollection,
   IGeoJsonResource,
   MIMETYPE_GEOJSON,
-} from './transport-line.model';
+} from './transport-line-action.model';
 
 /**
  * Fetches the URL of a GeoJSON file from the transport metadata service.
